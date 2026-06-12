@@ -99,9 +99,36 @@ export class NavigationService {
         items: Navigation['default'],
         allowedIds: ReadonlySet<string>
     ): Navigation['default'] {
-        return items.filter((item) =>
-            allowedIds.has(item.id ?? '')
-        );
+        return items
+            .map((item) => this._filterNavigationItem(item, allowedIds))
+            .filter((item): item is NonNullable<typeof item> => item !== null);
+    }
+
+    private _filterNavigationItem(
+        item: Navigation['default'][number],
+        allowedIds: ReadonlySet<string>
+    ): Navigation['default'][number] | null {
+        const hasAllowedId = allowedIds.has(item.id ?? '');
+
+        if (item.children?.length) {
+            const children = this._filterNavigationItems(
+                item.children as Navigation['default'],
+                allowedIds
+            );
+
+            if (hasAllowedId || children.length > 0) {
+                return {
+                    ...item,
+                    children,
+                };
+            }
+        }
+
+        if (hasAllowedId) {
+            return item;
+        }
+
+        return null;
     }
 
     private _isFinanceOnly(authorities: string[]): boolean {
