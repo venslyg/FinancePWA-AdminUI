@@ -13,11 +13,11 @@ export type PartialUpdateAssetSubCategory = Partial<IAssetSubCategory> & Pick<IA
 
 // --- Define REST-safe types by converting Dayjs objects to strings ---
 type RestOf<T extends IAssetSubCategory | NewAssetSubCategory | PartialUpdateAssetSubCategory> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
-  
+
   createdDate?: string | null;
-  
+
   lastModifiedDate?: string | null;
-  
+
 };
 
 export type RestAssetSubCategory = RestOf<IAssetSubCategory>;
@@ -33,7 +33,7 @@ export class AssetSubCategoryService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `//api/asset-sub-categorys`;
+  protected resourceUrl = `/api/asset-sub-categorys`;
 
   create(payload: NewAssetSubCategory): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
@@ -73,32 +73,32 @@ export class AssetSubCategoryService {
   // --- Date Conversion Helpers ---
   protected convertDateFromClient<T extends IAssetSubCategory | NewAssetSubCategory | PartialUpdateAssetSubCategory>(entity: T): RestOf<T> {
     const copy: any = { ...entity };
-    
+
     if (dayjs.isDayjs(entity.createdDate)) {
       copy.createdDate = entity.createdDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.lastModifiedDate)) {
       copy.lastModifiedDate = entity.lastModifiedDate.toJSON();
     }
-    
+
     return copy;
   }
 
   protected convertDateFromServer(restEntity: RestAssetSubCategory): IAssetSubCategory {
     const entity: any = { ...restEntity };
-    
+
     if (entity.createdDate) {
-        entity.createdDate = dayjs(entity.createdDate);
+      entity.createdDate = dayjs(entity.createdDate);
     }
-    
+
     if (entity.lastModifiedDate) {
-        entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
+      entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
     }
-    
+
     return entity;
   }
-  
+
   protected convertResponseFromServer(res: HttpResponse<RestAssetSubCategory>): HttpResponse<IAssetSubCategory> {
     return res.clone({ body: res.body ? this.convertDateFromServer(res.body) : null });
   }

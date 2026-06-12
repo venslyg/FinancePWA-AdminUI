@@ -12,10 +12,26 @@ export class NavigationService {
     private readonly _userService = inject(UserService);
     private readonly _financeNavigationIds = new Set([
         'dashboard',
-        'employee',
-        'loan',
-        'role',
-        'salary',
+        'branch',
+        'account-set',
+        'income-entry',
+        'expense-category',
+        'expense-sub-category',
+        'expense-entry',
+        'bank-ledger',
+        'petty-cash-ledger',
+        'asset-category',
+        'asset-sub-category',
+        'asset-register',
+        'asset-depreciation-history',
+        'inventory-item',
+        'bin-card-line',
+        'liability-log',
+        'budget-plan',
+        'maintenance-log',
+        'church-staff',
+        'salary-payout',
+        'donation-tracker',
     ]);
 
     // -----------------------------------------------------------------------------------------------------

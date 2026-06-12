@@ -13,13 +13,13 @@ export type PartialUpdateBankLedger = Partial<IBankLedger> & Pick<IBankLedger, '
 
 // --- Define REST-safe types by converting Dayjs objects to strings ---
 type RestOf<T extends IBankLedger | NewBankLedger | PartialUpdateBankLedger> = Omit<T, 'date' | 'createdDate' | 'lastModifiedDate'> & {
-  
+
   date?: string | null;
-  
+
   createdDate?: string | null;
-  
+
   lastModifiedDate?: string | null;
-  
+
 };
 
 export type RestBankLedger = RestOf<IBankLedger>;
@@ -35,7 +35,7 @@ export class BankLedgerService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `//api/bank-ledgers`;
+  protected resourceUrl = `/api/bank-ledgers`;
 
   create(payload: NewBankLedger): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
@@ -75,40 +75,40 @@ export class BankLedgerService {
   // --- Date Conversion Helpers ---
   protected convertDateFromClient<T extends IBankLedger | NewBankLedger | PartialUpdateBankLedger>(entity: T): RestOf<T> {
     const copy: any = { ...entity };
-    
+
     if (dayjs.isDayjs(entity.date)) {
       copy.date = entity.date.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.createdDate)) {
       copy.createdDate = entity.createdDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.lastModifiedDate)) {
       copy.lastModifiedDate = entity.lastModifiedDate.toJSON();
     }
-    
+
     return copy;
   }
 
   protected convertDateFromServer(restEntity: RestBankLedger): IBankLedger {
     const entity: any = { ...restEntity };
-    
+
     if (entity.date) {
-        entity.date = dayjs(entity.date);
+      entity.date = dayjs(entity.date);
     }
-    
+
     if (entity.createdDate) {
-        entity.createdDate = dayjs(entity.createdDate);
+      entity.createdDate = dayjs(entity.createdDate);
     }
-    
+
     if (entity.lastModifiedDate) {
-        entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
+      entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
     }
-    
+
     return entity;
   }
-  
+
   protected convertResponseFromServer(res: HttpResponse<RestBankLedger>): HttpResponse<IBankLedger> {
     return res.clone({ body: res.body ? this.convertDateFromServer(res.body) : null });
   }

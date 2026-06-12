@@ -13,11 +13,11 @@ export type PartialUpdateBranch = Partial<IBranch> & Pick<IBranch, 'id'>;
 
 // --- Define REST-safe types by converting Dayjs objects to strings ---
 type RestOf<T extends IBranch | NewBranch | PartialUpdateBranch> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
-  
+
   createdDate?: string | null;
-  
+
   lastModifiedDate?: string | null;
-  
+
 };
 
 export type RestBranch = RestOf<IBranch>;
@@ -33,7 +33,7 @@ export class BranchService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `//api/branchs`;
+  protected resourceUrl = `/api/branchs`;
 
   create(payload: NewBranch): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
@@ -73,32 +73,32 @@ export class BranchService {
   // --- Date Conversion Helpers ---
   protected convertDateFromClient<T extends IBranch | NewBranch | PartialUpdateBranch>(entity: T): RestOf<T> {
     const copy: any = { ...entity };
-    
+
     if (dayjs.isDayjs(entity.createdDate)) {
       copy.createdDate = entity.createdDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.lastModifiedDate)) {
       copy.lastModifiedDate = entity.lastModifiedDate.toJSON();
     }
-    
+
     return copy;
   }
 
   protected convertDateFromServer(restEntity: RestBranch): IBranch {
     const entity: any = { ...restEntity };
-    
+
     if (entity.createdDate) {
-        entity.createdDate = dayjs(entity.createdDate);
+      entity.createdDate = dayjs(entity.createdDate);
     }
-    
+
     if (entity.lastModifiedDate) {
-        entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
+      entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
     }
-    
+
     return entity;
   }
-  
+
   protected convertResponseFromServer(res: HttpResponse<RestBranch>): HttpResponse<IBranch> {
     return res.clone({ body: res.body ? this.convertDateFromServer(res.body) : null });
   }

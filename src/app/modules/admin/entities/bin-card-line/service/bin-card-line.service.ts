@@ -13,13 +13,13 @@ export type PartialUpdateBinCardLine = Partial<IBinCardLine> & Pick<IBinCardLine
 
 // --- Define REST-safe types by converting Dayjs objects to strings ---
 type RestOf<T extends IBinCardLine | NewBinCardLine | PartialUpdateBinCardLine> = Omit<T, 'date' | 'createdDate' | 'lastModifiedDate'> & {
-  
+
   date?: string | null;
-  
+
   createdDate?: string | null;
-  
+
   lastModifiedDate?: string | null;
-  
+
 };
 
 export type RestBinCardLine = RestOf<IBinCardLine>;
@@ -35,7 +35,7 @@ export class BinCardLineService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `//api/bin-card-lines`;
+  protected resourceUrl = `/api/bin-card-lines`;
 
   create(payload: NewBinCardLine): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
@@ -75,40 +75,40 @@ export class BinCardLineService {
   // --- Date Conversion Helpers ---
   protected convertDateFromClient<T extends IBinCardLine | NewBinCardLine | PartialUpdateBinCardLine>(entity: T): RestOf<T> {
     const copy: any = { ...entity };
-    
+
     if (dayjs.isDayjs(entity.date)) {
       copy.date = entity.date.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.createdDate)) {
       copy.createdDate = entity.createdDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.lastModifiedDate)) {
       copy.lastModifiedDate = entity.lastModifiedDate.toJSON();
     }
-    
+
     return copy;
   }
 
   protected convertDateFromServer(restEntity: RestBinCardLine): IBinCardLine {
     const entity: any = { ...restEntity };
-    
+
     if (entity.date) {
-        entity.date = dayjs(entity.date);
+      entity.date = dayjs(entity.date);
     }
-    
+
     if (entity.createdDate) {
-        entity.createdDate = dayjs(entity.createdDate);
+      entity.createdDate = dayjs(entity.createdDate);
     }
-    
+
     if (entity.lastModifiedDate) {
-        entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
+      entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
     }
-    
+
     return entity;
   }
-  
+
   protected convertResponseFromServer(res: HttpResponse<RestBinCardLine>): HttpResponse<IBinCardLine> {
     return res.clone({ body: res.body ? this.convertDateFromServer(res.body) : null });
   }

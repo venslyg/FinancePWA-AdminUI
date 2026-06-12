@@ -13,13 +13,13 @@ export type PartialUpdateSalaryPayout = Partial<ISalaryPayout> & Pick<ISalaryPay
 
 // --- Define REST-safe types by converting Dayjs objects to strings ---
 type RestOf<T extends ISalaryPayout | NewSalaryPayout | PartialUpdateSalaryPayout> = Omit<T, 'payoutDate' | 'createdDate' | 'lastModifiedDate'> & {
-  
+
   payoutDate?: string | null;
-  
+
   createdDate?: string | null;
-  
+
   lastModifiedDate?: string | null;
-  
+
 };
 
 export type RestSalaryPayout = RestOf<ISalaryPayout>;
@@ -35,7 +35,7 @@ export class SalaryPayoutService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `//api/salary-payouts`;
+  protected resourceUrl = `/api/salary-payouts`;
 
   create(payload: NewSalaryPayout): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
@@ -75,40 +75,40 @@ export class SalaryPayoutService {
   // --- Date Conversion Helpers ---
   protected convertDateFromClient<T extends ISalaryPayout | NewSalaryPayout | PartialUpdateSalaryPayout>(entity: T): RestOf<T> {
     const copy: any = { ...entity };
-    
+
     if (dayjs.isDayjs(entity.payoutDate)) {
       copy.payoutDate = entity.payoutDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.createdDate)) {
       copy.createdDate = entity.createdDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.lastModifiedDate)) {
       copy.lastModifiedDate = entity.lastModifiedDate.toJSON();
     }
-    
+
     return copy;
   }
 
   protected convertDateFromServer(restEntity: RestSalaryPayout): ISalaryPayout {
     const entity: any = { ...restEntity };
-    
+
     if (entity.payoutDate) {
-        entity.payoutDate = dayjs(entity.payoutDate);
+      entity.payoutDate = dayjs(entity.payoutDate);
     }
-    
+
     if (entity.createdDate) {
-        entity.createdDate = dayjs(entity.createdDate);
+      entity.createdDate = dayjs(entity.createdDate);
     }
-    
+
     if (entity.lastModifiedDate) {
-        entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
+      entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
     }
-    
+
     return entity;
   }
-  
+
   protected convertResponseFromServer(res: HttpResponse<RestSalaryPayout>): HttpResponse<ISalaryPayout> {
     return res.clone({ body: res.body ? this.convertDateFromServer(res.body) : null });
   }

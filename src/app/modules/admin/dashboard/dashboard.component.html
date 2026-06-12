@@ -2,7 +2,7 @@
   <div class="rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 p-6 text-white shadow-lg">
     <div class="text-sm uppercase tracking-wide text-slate-200">Admin Dashboard</div>
     <div class="mt-2 text-2xl font-semibold">Welcome back</div>
-    <div class="mt-1 text-sm text-slate-200">Overview of land, employees, loans, and advances.</div>
+    <div class="mt-1 text-sm text-slate-200">Overview of branches, accounts, income, expenses, assets, and staff.</div>
   </div>
 
   <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -20,27 +20,23 @@
     <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       <div class="text-lg font-semibold text-slate-700">Quick Actions</div>
       <div class="mt-6 grid gap-4 sm:grid-cols-2">
-        <a
-          *ngIf="!isFinanceOnly"
-          class="flex items-center justify-between rounded-xl border border-slate-200 p-4 hover:bg-slate-50 transition"
-          routerLink="/land"
-        >
-          <span class="font-medium text-slate-700">Add New Land</span>
+        <a class="flex items-center justify-between rounded-xl border border-slate-200 p-4 hover:bg-slate-50 transition" routerLink="/branch">
+          <span class="font-medium text-slate-700">Add Branch</span>
         </a>
-        <a class="flex items-center justify-between rounded-xl border border-slate-200 p-4 hover:bg-slate-50 transition" routerLink="/employee">
-          <span class="font-medium text-slate-700">Add New Employee</span>
+        <a class="flex items-center justify-between rounded-xl border border-slate-200 p-4 hover:bg-slate-50 transition" routerLink="/account-set">
+          <span class="font-medium text-slate-700">Add Account</span>
         </a>
-        <a class="flex items-center justify-between rounded-xl border border-slate-200 p-4 hover:bg-slate-50 transition" routerLink="/loan">
-          <span class="font-medium text-slate-700">Add New Loan</span>
+        <a class="flex items-center justify-between rounded-xl border border-slate-200 p-4 hover:bg-slate-50 transition" routerLink="/income-entry">
+          <span class="font-medium text-slate-700">Record Income</span>
         </a>
-        <a class="flex items-center justify-between rounded-xl border border-slate-200 p-4 hover:bg-slate-50 transition" routerLink="/advance">
-          <span class="font-medium text-slate-700">Add New Advance </span>
+        <a class="flex items-center justify-between rounded-xl border border-slate-200 p-4 hover:bg-slate-50 transition" routerLink="/expense-entry">
+          <span class="font-medium text-slate-700">Record Expense</span>
         </a>
-        <a class="flex items-center justify-between rounded-xl border border-slate-200 p-4 hover:bg-slate-50 transition" routerLink="/role">
-            <span class="font-medium text-slate-700">Add New Role</span>
+        <a class="flex items-center justify-between rounded-xl border border-slate-200 p-4 hover:bg-slate-50 transition" routerLink="/asset-register">
+          <span class="font-medium text-slate-700">Register Asset</span>
         </a>
-        <a class="flex items-center justify-between rounded-xl border border-slate-200 p-4 hover:bg-slate-50 transition" routerLink="/salary-sheet">
-            <span class="font-medium text-slate-700">Create Payslip</span>
+        <a class="flex items-center justify-between rounded-xl border border-slate-200 p-4 hover:bg-slate-50 transition" routerLink="/church-staff">
+          <span class="font-medium text-slate-700">Add Staff</span>
         </a>
       </div>
     </div>

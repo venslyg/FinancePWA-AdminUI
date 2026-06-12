@@ -13,13 +13,13 @@ export type PartialUpdateDonationTracker = Partial<IDonationTracker> & Pick<IDon
 
 // --- Define REST-safe types by converting Dayjs objects to strings ---
 type RestOf<T extends IDonationTracker | NewDonationTracker | PartialUpdateDonationTracker> = Omit<T, 'date' | 'createdDate' | 'lastModifiedDate'> & {
-  
+
   date?: string | null;
-  
+
   createdDate?: string | null;
-  
+
   lastModifiedDate?: string | null;
-  
+
 };
 
 export type RestDonationTracker = RestOf<IDonationTracker>;
@@ -35,7 +35,7 @@ export class DonationTrackerService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `//api/donation-trackers`;
+  protected resourceUrl = `/api/donation-trackers`;
 
   create(payload: NewDonationTracker): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
@@ -75,40 +75,40 @@ export class DonationTrackerService {
   // --- Date Conversion Helpers ---
   protected convertDateFromClient<T extends IDonationTracker | NewDonationTracker | PartialUpdateDonationTracker>(entity: T): RestOf<T> {
     const copy: any = { ...entity };
-    
+
     if (dayjs.isDayjs(entity.date)) {
       copy.date = entity.date.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.createdDate)) {
       copy.createdDate = entity.createdDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.lastModifiedDate)) {
       copy.lastModifiedDate = entity.lastModifiedDate.toJSON();
     }
-    
+
     return copy;
   }
 
   protected convertDateFromServer(restEntity: RestDonationTracker): IDonationTracker {
     const entity: any = { ...restEntity };
-    
+
     if (entity.date) {
-        entity.date = dayjs(entity.date);
+      entity.date = dayjs(entity.date);
     }
-    
+
     if (entity.createdDate) {
-        entity.createdDate = dayjs(entity.createdDate);
+      entity.createdDate = dayjs(entity.createdDate);
     }
-    
+
     if (entity.lastModifiedDate) {
-        entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
+      entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
     }
-    
+
     return entity;
   }
-  
+
   protected convertResponseFromServer(res: HttpResponse<RestDonationTracker>): HttpResponse<IDonationTracker> {
     return res.clone({ body: res.body ? this.convertDateFromServer(res.body) : null });
   }
