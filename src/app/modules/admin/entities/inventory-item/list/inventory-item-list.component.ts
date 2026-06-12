@@ -129,102 +129,7 @@ export class InventoryItemListComponent implements AfterViewInit, OnInit {
 
   selectedInventoryItem: IInventoryItem | null = null;
   drawerMode: 'new' | 'edit' = 'new';
-
-  
-
-  // --- Filter configuration ---
-  filterFields: FilterField[] = [
-    
-    {
-      key: 'branchCode',
-      label: 'BranchCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'inventoryItemCode',
-      label: 'InventoryItemCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'itemName',
-      label: 'ItemName',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'category',
-      label: 'Category',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'quantity',
-      label: 'Quantity',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'unitPrice',
-      label: 'UnitPrice',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'runningStockCount',
-      label: 'RunningStockCount',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'createdBy',
-      label: 'CreatedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'createdDate',
-      label: 'CreatedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    {
-      key: 'lastModifiedBy',
-      label: 'LastModifiedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'lastModifiedDate',
-      label: 'LastModifiedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    
-  ];
+  filterFields: FilterField[] = [];
 
   filtersForm: FormGroup = this.buildFiltersForm();
 
@@ -234,7 +139,7 @@ export class InventoryItemListComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'branchCode', 'inventoryItemCode', 'itemName', 'category', 'quantity', 'unitPrice', 'runningStockCount', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate',  'actions'];
+  displayedColumns: string[] = ['id', 'branchCode', 'inventoryItemCode', 'itemName', 'category', 'quantity', 'unitPrice', 'runningStockCount',  'actions'];
   dataSource = new MatTableDataSource<IInventoryItem>();
 
   ngOnInit(): void {
@@ -481,3 +386,4 @@ export class InventoryItemListComponent implements AfterViewInit, OnInit {
     return field.operators.find(item => item.key === operator);
   }
 }
+

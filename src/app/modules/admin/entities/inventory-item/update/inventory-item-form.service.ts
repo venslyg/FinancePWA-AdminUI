@@ -23,14 +23,6 @@ export type InventoryItemFormGroup = FormGroup<{
   
   runningStockCount: FormControl<IInventoryItem['runningStockCount']>;
   
-  createdBy: FormControl<IInventoryItem['createdBy']>;
-  
-  createdDate: FormControl<IInventoryItem['createdDate']>;
-  
-  lastModifiedBy: FormControl<IInventoryItem['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IInventoryItem['lastModifiedDate']>;
-  
   
 }>;
 
@@ -57,14 +49,6 @@ export class InventoryItemFormService {
       
       runningStockCount: new FormControl(entity.runningStockCount),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -82,3 +66,4 @@ export class InventoryItemFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

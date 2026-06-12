@@ -35,14 +35,6 @@ export type LiabilityLogFormGroup = FormGroup<{
   
   status: FormControl<ILiabilityLog['status']>;
   
-  createdBy: FormControl<ILiabilityLog['createdBy']>;
-  
-  createdDate: FormControl<ILiabilityLog['createdDate']>;
-  
-  lastModifiedBy: FormControl<ILiabilityLog['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<ILiabilityLog['lastModifiedDate']>;
-  
   
 }>;
 
@@ -81,14 +73,6 @@ export class LiabilityLogFormService {
       
       status: new FormControl(entity.status),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -106,3 +90,4 @@ export class LiabilityLogFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

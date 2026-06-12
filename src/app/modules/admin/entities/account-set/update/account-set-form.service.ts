@@ -21,14 +21,6 @@ export type AccountSetFormGroup = FormGroup<{
   
   remark: FormControl<IAccountSet['remark']>;
   
-  createdBy: FormControl<IAccountSet['createdBy']>;
-  
-  createdDate: FormControl<IAccountSet['createdDate']>;
-  
-  lastModifiedBy: FormControl<IAccountSet['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IAccountSet['lastModifiedDate']>;
-  
   
 }>;
 
@@ -53,14 +45,6 @@ export class AccountSetFormService {
       
       remark: new FormControl(entity.remark),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -78,3 +62,4 @@ export class AccountSetFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

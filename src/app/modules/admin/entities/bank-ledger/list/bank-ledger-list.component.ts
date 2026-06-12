@@ -129,118 +129,7 @@ export class BankLedgerListComponent implements AfterViewInit, OnInit {
 
   selectedBankLedger: IBankLedger | null = null;
   drawerMode: 'new' | 'edit' = 'new';
-
-  
-
-  // --- Filter configuration ---
-  filterFields: FilterField[] = [
-    
-    {
-      key: 'branchCode',
-      label: 'BranchCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'bankLedgerCode',
-      label: 'BankLedgerCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'date',
-      label: 'Date',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'LocalDate'
-    },
-    
-    {
-      key: 'referenceNo',
-      label: 'ReferenceNo',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'description',
-      label: 'Description',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'depositAmount',
-      label: 'DepositAmount',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'withdrawalAmount',
-      label: 'WithdrawalAmount',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'runningBalance',
-      label: 'RunningBalance',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'remark',
-      label: 'Remark',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'createdBy',
-      label: 'CreatedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'createdDate',
-      label: 'CreatedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    {
-      key: 'lastModifiedBy',
-      label: 'LastModifiedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'lastModifiedDate',
-      label: 'LastModifiedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    
-  ];
+  filterFields: FilterField[] = [];
 
   filtersForm: FormGroup = this.buildFiltersForm();
 
@@ -250,7 +139,7 @@ export class BankLedgerListComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'branchCode', 'bankLedgerCode', 'date', 'referenceNo', 'description', 'depositAmount', 'withdrawalAmount', 'runningBalance', 'remark', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate',  'actions'];
+  displayedColumns: string[] = ['id', 'branchCode', 'bankLedgerCode', 'date', 'referenceNo', 'description', 'depositAmount', 'withdrawalAmount', 'runningBalance', 'remark',  'actions'];
   dataSource = new MatTableDataSource<IBankLedger>();
 
   ngOnInit(): void {
@@ -497,3 +386,4 @@ export class BankLedgerListComponent implements AfterViewInit, OnInit {
     return field.operators.find(item => item.key === operator);
   }
 }
+

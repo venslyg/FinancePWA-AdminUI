@@ -129,86 +129,7 @@ export class AssetDepreciationHistoryListComponent implements AfterViewInit, OnI
 
   selectedAssetDepreciationHistory: IAssetDepreciationHistory | null = null;
   drawerMode: 'new' | 'edit' = 'new';
-
-  
-
-  // --- Filter configuration ---
-  filterFields: FilterField[] = [
-    
-    {
-      key: 'assetRegisterCode',
-      label: 'AssetRegisterCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'depreciationDate',
-      label: 'DepreciationDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'LocalDate'
-    },
-    
-    {
-      key: 'depreciationAmount',
-      label: 'DepreciationAmount',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'valueAfterDepreciation',
-      label: 'ValueAfterDepreciation',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'processedBy',
-      label: 'ProcessedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'createdBy',
-      label: 'CreatedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'createdDate',
-      label: 'CreatedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    {
-      key: 'lastModifiedBy',
-      label: 'LastModifiedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'lastModifiedDate',
-      label: 'LastModifiedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    
-  ];
+  filterFields: FilterField[] = [];
 
   filtersForm: FormGroup = this.buildFiltersForm();
 
@@ -218,7 +139,7 @@ export class AssetDepreciationHistoryListComponent implements AfterViewInit, OnI
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'assetRegisterCode', 'depreciationDate', 'depreciationAmount', 'valueAfterDepreciation', 'processedBy', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate',  'actions'];
+  displayedColumns: string[] = ['id', 'assetRegisterCode', 'depreciationDate', 'depreciationAmount', 'valueAfterDepreciation', 'processedBy',  'actions'];
   dataSource = new MatTableDataSource<IAssetDepreciationHistory>();
 
   ngOnInit(): void {
@@ -465,3 +386,4 @@ export class AssetDepreciationHistoryListComponent implements AfterViewInit, OnI
     return field.operators.find(item => item.key === operator);
   }
 }
+

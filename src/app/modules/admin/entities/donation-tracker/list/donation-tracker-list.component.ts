@@ -132,118 +132,7 @@ export class DonationTrackerListComponent implements AfterViewInit, OnInit {
 
   
   readonly paymentModeOptions = Object.keys(PaymentMode);
-  
-
-  // --- Filter configuration ---
-  filterFields: FilterField[] = [
-    
-    {
-      key: 'branchCode',
-      label: 'BranchCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'donationIdCode',
-      label: 'DonationIdCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'date',
-      label: 'Date',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'LocalDate'
-    },
-    
-    {
-      key: 'donorNameOrOrg',
-      label: 'DonorNameOrOrg',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'contactDetails',
-      label: 'ContactDetails',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'amount',
-      label: 'Amount',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'purpose',
-      label: 'Purpose',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'receivedViaMode',
-      label: 'ReceivedViaMode',
-      valueType: 'enum' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['enum'],
-      rawFieldType: 'PaymentMode',
-      enumOptionsKey: 'paymentModeOptions'
-    },
-    
-    {
-      key: 'notes',
-      label: 'Notes',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'createdBy',
-      label: 'CreatedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'createdDate',
-      label: 'CreatedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    {
-      key: 'lastModifiedBy',
-      label: 'LastModifiedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'lastModifiedDate',
-      label: 'LastModifiedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    
-  ];
+  filterFields: FilterField[] = [];
 
   filtersForm: FormGroup = this.buildFiltersForm();
 
@@ -253,7 +142,7 @@ export class DonationTrackerListComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'branchCode', 'donationIdCode', 'date', 'donorNameOrOrg', 'contactDetails', 'amount', 'purpose', 'receivedViaMode', 'notes', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate',  'actions'];
+  displayedColumns: string[] = ['id', 'branchCode', 'donationIdCode', 'date', 'donorNameOrOrg', 'contactDetails', 'amount', 'purpose', 'receivedViaMode', 'notes',  'actions'];
   dataSource = new MatTableDataSource<IDonationTracker>();
 
   ngOnInit(): void {
@@ -500,3 +389,4 @@ export class DonationTrackerListComponent implements AfterViewInit, OnInit {
     return field.operators.find(item => item.key === operator);
   }
 }
+

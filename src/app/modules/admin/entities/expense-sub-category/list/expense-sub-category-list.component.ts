@@ -129,70 +129,7 @@ export class ExpenseSubCategoryListComponent implements AfterViewInit, OnInit {
 
   selectedExpenseSubCategory: IExpenseSubCategory | null = null;
   drawerMode: 'new' | 'edit' = 'new';
-
-  
-
-  // --- Filter configuration ---
-  filterFields: FilterField[] = [
-    
-    {
-      key: 'categoryCode',
-      label: 'CategoryCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'subCategoryCode',
-      label: 'SubCategoryCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'subCategoryName',
-      label: 'SubCategoryName',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'createdBy',
-      label: 'CreatedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'createdDate',
-      label: 'CreatedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    {
-      key: 'lastModifiedBy',
-      label: 'LastModifiedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'lastModifiedDate',
-      label: 'LastModifiedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    
-  ];
+  filterFields: FilterField[] = [];
 
   filtersForm: FormGroup = this.buildFiltersForm();
 
@@ -202,7 +139,7 @@ export class ExpenseSubCategoryListComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'categoryCode', 'subCategoryCode', 'subCategoryName', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate',  'actions'];
+  displayedColumns: string[] = ['id', 'categoryCode', 'subCategoryCode', 'subCategoryName',  'actions'];
   dataSource = new MatTableDataSource<IExpenseSubCategory>();
 
   ngOnInit(): void {
@@ -449,3 +386,4 @@ export class ExpenseSubCategoryListComponent implements AfterViewInit, OnInit {
     return field.operators.find(item => item.key === operator);
   }
 }
+

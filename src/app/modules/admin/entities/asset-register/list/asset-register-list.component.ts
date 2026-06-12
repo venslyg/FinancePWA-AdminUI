@@ -129,134 +129,7 @@ export class AssetRegisterListComponent implements AfterViewInit, OnInit {
 
   selectedAssetRegister: IAssetRegister | null = null;
   drawerMode: 'new' | 'edit' = 'new';
-
-  
-
-  // --- Filter configuration ---
-  filterFields: FilterField[] = [
-    
-    {
-      key: 'branchCode',
-      label: 'BranchCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'assetRegisterCode',
-      label: 'AssetRegisterCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'assetCategoryCode',
-      label: 'AssetCategoryCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'assetSubCategoryCode',
-      label: 'AssetSubCategoryCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'assetName',
-      label: 'AssetName',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'category',
-      label: 'Category',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'purchaseDate',
-      label: 'PurchaseDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'LocalDate'
-    },
-    
-    {
-      key: 'purchaseCost',
-      label: 'PurchaseCost',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'currentValue',
-      label: 'CurrentValue',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'depreciationRate',
-      label: 'DepreciationRate',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'accumulatedDepreciation',
-      label: 'AccumulatedDepreciation',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'createdBy',
-      label: 'CreatedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'createdDate',
-      label: 'CreatedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    {
-      key: 'lastModifiedBy',
-      label: 'LastModifiedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'lastModifiedDate',
-      label: 'LastModifiedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    
-  ];
+  filterFields: FilterField[] = [];
 
   filtersForm: FormGroup = this.buildFiltersForm();
 
@@ -266,7 +139,7 @@ export class AssetRegisterListComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'branchCode', 'assetRegisterCode', 'assetCategoryCode', 'assetSubCategoryCode', 'assetName', 'category', 'purchaseDate', 'purchaseCost', 'currentValue', 'depreciationRate', 'accumulatedDepreciation', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate',  'actions'];
+  displayedColumns: string[] = ['id', 'branchCode', 'assetRegisterCode', 'assetCategoryCode', 'assetSubCategoryCode', 'assetName', 'category', 'purchaseDate', 'purchaseCost', 'currentValue', 'depreciationRate', 'accumulatedDepreciation',  'actions'];
   dataSource = new MatTableDataSource<IAssetRegister>();
 
   ngOnInit(): void {
@@ -513,3 +386,4 @@ export class AssetRegisterListComponent implements AfterViewInit, OnInit {
     return field.operators.find(item => item.key === operator);
   }
 }
+

@@ -138,168 +138,7 @@ export class ExpenseEntryListComponent implements AfterViewInit, OnInit {
   readonly approvalStatusOptions = Object.keys(ApprovalStatus);
   
   readonly syncStatusOptions = Object.keys(SyncStatus);
-  
-
-  // --- Filter configuration ---
-  filterFields: FilterField[] = [
-    
-    {
-      key: 'branchCode',
-      label: 'BranchCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'accountCode',
-      label: 'AccountCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'expenseCode',
-      label: 'ExpenseCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'expenseCategoryCode',
-      label: 'ExpenseCategoryCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'expenseSubCategoryCode',
-      label: 'ExpenseSubCategoryCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'createdByUsername',
-      label: 'CreatedByUsername',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'date',
-      label: 'Date',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'LocalDate'
-    },
-    
-    {
-      key: 'voucherNo',
-      label: 'VoucherNo',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'description',
-      label: 'Description',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'amount',
-      label: 'Amount',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'paymentMode',
-      label: 'PaymentMode',
-      valueType: 'enum' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['enum'],
-      rawFieldType: 'PaymentMode',
-      enumOptionsKey: 'paymentModeOptions'
-    },
-    
-    {
-      key: 'approvalStatus',
-      label: 'ApprovalStatus',
-      valueType: 'enum' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['enum'],
-      rawFieldType: 'ApprovalStatus',
-      enumOptionsKey: 'approvalStatusOptions'
-    },
-    
-    {
-      key: 'approvedBy',
-      label: 'ApprovedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'vendor',
-      label: 'Vendor',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'syncStatus',
-      label: 'SyncStatus',
-      valueType: 'enum' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['enum'],
-      rawFieldType: 'SyncStatus',
-      enumOptionsKey: 'syncStatusOptions'
-    },
-    
-    {
-      key: 'createdBy',
-      label: 'CreatedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'createdDate',
-      label: 'CreatedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    {
-      key: 'lastModifiedBy',
-      label: 'LastModifiedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'lastModifiedDate',
-      label: 'LastModifiedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    
-  ];
+  filterFields: FilterField[] = [];
 
   filtersForm: FormGroup = this.buildFiltersForm();
 
@@ -309,7 +148,7 @@ export class ExpenseEntryListComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'branchCode', 'accountCode', 'expenseCode', 'expenseCategoryCode', 'expenseSubCategoryCode', 'createdByUsername', 'date', 'voucherNo', 'description', 'amount', 'paymentMode', 'approvalStatus', 'approvedBy', 'vendor', 'syncStatus', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate',  'actions'];
+  displayedColumns: string[] = ['id', 'branchCode', 'accountCode', 'expenseCode', 'expenseCategoryCode', 'expenseSubCategoryCode', 'date', 'voucherNo', 'description', 'amount', 'paymentMode', 'approvalStatus', 'approvedBy', 'vendor', 'syncStatus',  'actions'];
   dataSource = new MatTableDataSource<IExpenseEntry>();
 
   ngOnInit(): void {
@@ -556,3 +395,4 @@ export class ExpenseEntryListComponent implements AfterViewInit, OnInit {
     return field.operators.find(item => item.key === operator);
   }
 }
+

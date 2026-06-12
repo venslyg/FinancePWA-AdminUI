@@ -25,14 +25,6 @@ export type MaintenanceLogFormGroup = FormGroup<{
   
   note: FormControl<IMaintenanceLog['note']>;
   
-  createdBy: FormControl<IMaintenanceLog['createdBy']>;
-  
-  createdDate: FormControl<IMaintenanceLog['createdDate']>;
-  
-  lastModifiedBy: FormControl<IMaintenanceLog['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IMaintenanceLog['lastModifiedDate']>;
-  
   
 }>;
 
@@ -61,14 +53,6 @@ export class MaintenanceLogFormService {
       
       note: new FormControl(entity.note),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -86,3 +70,4 @@ export class MaintenanceLogFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+
