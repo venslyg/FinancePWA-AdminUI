@@ -1,0 +1,129 @@
+<!-- Reusable form component template -->
+<form class="flex h-full flex-col" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="flex items-center justify-between border-b pb-4">
+    <h2 class="text-2xl font-bold">
+      {{ heading || (isEditMode ? 'Edit DonationTracker' : 'New DonationTracker') }}
+    </h2>
+    <mat-icon *ngIf="isSaving" class="animate-spin">autorenew</mat-icon>
+  </div>
+
+  <div class="flex-auto space-y-4 overflow-y-auto pt-6">
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>BranchCode</mat-label>
+      <input matInput formControlName="branchCode" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>DonationIdCode</mat-label>
+      <input matInput formControlName="donationIdCode" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="pickerdate" formControlName="date">
+      <mat-datepicker-toggle matSuffix [for]="pickerdate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerdate></mat-datepicker>
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>DonorNameOrOrg</mat-label>
+      <input matInput formControlName="donorNameOrOrg" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>ContactDetails</mat-label>
+      <input matInput formControlName="contactDetails" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>Amount</mat-label>
+      <input matInput formControlName="amount" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>Purpose</mat-label>
+      <input matInput formControlName="purpose" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>ReceivedViaMode</mat-label>
+      <mat-select formControlName="receivedViaMode">
+        <mat-option *ngFor="let option of paymentModeOptions" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>Notes</mat-label>
+      <input matInput formControlName="notes" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>CreatedBy</mat-label>
+      <input matInput formControlName="createdBy" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>CreatedDate</mat-label>
+      <input matInput [matDatepicker]="pickercreatedDate" formControlName="createdDate">
+      <mat-datepicker-toggle matSuffix [for]="pickercreatedDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickercreatedDate></mat-datepicker>
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>LastModifiedBy</mat-label>
+      <input matInput formControlName="lastModifiedBy" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>LastModifiedDate</mat-label>
+      <input matInput [matDatepicker]="pickerlastModifiedDate" formControlName="lastModifiedDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerlastModifiedDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerlastModifiedDate></mat-datepicker>
+    </mat-form-field>
+      
+    
+
+    
+    
+  </div>
+
+  <div *ngIf="errorMessage" class="mt-2 rounded bg-warn-100 px-4 py-2 text-warn-900">
+    {{ errorMessage }}
+  </div>
+
+  <div class="mt-6 flex items-center justify-end border-t pt-6">
+    <button type="button" mat-button (click)="onCancel()">Cancel</button>
+    <button type="submit" mat-flat-button color="primary" class="ml-3" [disabled]="form.invalid || isSaving">
+      <span *ngIf="!isSaving">Save</span>
+      <span *ngIf="isSaving">Saving…</span>
+    </button>
+  </div>
+</form>

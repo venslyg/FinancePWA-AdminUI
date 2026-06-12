@@ -1,0 +1,8 @@
+// This is an EJS template. It generates the enum file.
+export enum LiabilityType {
+  
+  LONG_TERM = 'LONG_TERM',
+  
+  SHORT_TERM = 'SHORT_TERM'
+  
+}

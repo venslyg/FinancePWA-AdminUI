@@ -1,0 +1,245 @@
+<!-- This is an EJS template. It generates the HTML for the list component. -->
+<mat-drawer-container class="absolute h-full w-full bg-transparent">
+    <!-- Main Content (The Table) -->
+    <mat-drawer-content class="flex flex-col">
+        <div class="absolute inset-0 flex h-full min-w-0 flex-col overflow-hidden">
+            <!-- Header -->
+            <div class="bg-default flex flex-0 flex-col p-6 pb-22 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:pb-28 sm:pt-12 dark:bg-transparent">
+                <div class="min-w-0 flex-1">
+                    <h2 class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl">Association Management</h2>
+                </div>
+                <!-- Actions -->
+                <div *ngIf=" SCREEN | accessCtrl: 'show_new_button' " class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0">
+                    <button class="ml-3" mat-flat-button [color]="'primary'" (click)="openDrawer()">
+                        <mat-icon [svgIcon]="'heroicons_mini:plus'"></mat-icon>
+                        <span class="ml-2">New Association</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="example-table-container bg-card -mt-16 h-full rounded-t-2xl" style="overflow-x: auto; white-space: nowrap; width: 100%">
+                <div *ngIf="isLoading" class="flex items-center justify-center p-8">
+                    <mat-progress-spinner [diameter]="40" [mode]="'indeterminate'"></mat-progress-spinner>
+                </div>
+
+                <div class="overflow-x-auto" style="scrollbar-width: none; -ms-overflow-style: none;" onscroll="this.style.setProperty(--webkit-scrollbar, none)">
+                    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="loadData()" *ngIf="!isLoading">
+                    <!-- Dynamically generate columns for entity fields -->
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+
+                        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+
+                        <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="contactNumber">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>ContactNumber</th>
+
+                        <td mat-cell *matCellDef="let element">{{ element.contactNumber }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="archiveStatus">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>ArchiveStatus</th>
+
+                        <td mat-cell *matCellDef="let element">{{ element.archiveStatus }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="address">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
+
+                        <td mat-cell *matCellDef="let element">{{ element.address }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="zone">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Zone</th>
+
+                        <td mat-cell *matCellDef="let element">{{ element.zone }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="subZone">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>SubZone</th>
+
+                        <td mat-cell *matCellDef="let element">{{ element.subZone }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="keywords">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Keywords</th>
+
+                        <td mat-cell *matCellDef="let element">{{ element.keywords }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="createdBy">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>CreatedBy</th>
+
+                        <td mat-cell *matCellDef="let element">{{ element.createdBy }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="createdDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>CreatedDate</th>
+
+                        <td mat-cell *matCellDef="let element">{{ element.createdDate | date: 'medium' }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="lastModifiedBy">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>LastModifiedBy</th>
+
+                        <td mat-cell *matCellDef="let element">{{ element.lastModifiedBy }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="lastModifiedDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>LastModifiedDate</th>
+
+                        <td mat-cell *matCellDef="let element">{{ element.lastModifiedDate | date: 'medium' }}</td>
+                    </ng-container>
+
+                    <!-- Generate columns for "Show Children" buttons -->
+
+                    <!-- General Actions Column (Edit/Delete) -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef>Actions</th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button (click)="openDrawer(element.id)" matTooltip="Edit Association">
+                                <mat-icon [svgIcon]="'heroicons_outline:pencil-square'"></mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="delete(element.id)" matTooltip="Delete Association">
+                                <mat-icon class="text-warn" [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">No data found.</td>
+                    </tr>
+                </table>
+                </div>
+            </div>
+
+            <!-- Paginator -->
+            <mat-paginator [length]="totalItems" [pageSize]="itemsPerPage" [pageSizeOptions]="[10, 25, 50, 100]" (page)="loadData()"></mat-paginator>
+        </div>
+    </mat-drawer-content>
+
+    <!-- Side Drawer for Form -->
+    <mat-drawer #matDrawer mode="over" position="end" class="w-1/3 min-w-96">
+        <div *ngIf="associationForm" class="bg-card flex h-full flex-col p-6">
+            <div class="border-b pb-4">
+                <h2 class="text-2xl font-bold">{{ drawerMode === 'new' ? 'New' : 'Edit' }} Association</h2>
+            </div>
+            <form [formGroup]="associationForm" class="flex-auto overflow-y-auto pt-6">
+                <!-- Dynamically generate form fields based on type -->
+
+                <!-- Default Mat-input for other types -->
+                <mat-form-field class="w-full">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name" required />
+                    <mat-error *ngIf="associationForm.get('name')?.hasError('required')"> Name is required </mat-error>
+                </mat-form-field>
+
+                <!-- Default Mat-input for other types -->
+                <mat-form-field class="w-full">
+                    <mat-label>Description</mat-label>
+                    <input matInput formControlName="description" />
+                </mat-form-field>
+
+                <!-- Default Mat-input for other types -->
+                <mat-form-field class="mb-5 w-full">
+                    <mat-label>Contact Number</mat-label>
+                    <input matInput formControlName="contactNumber" maxlength="12" required />
+                    <mat-hint>This will be used as your username for login</mat-hint>
+                    <mat-error *ngIf="associationForm.get('contactNumber')?.hasError('required')"> Contact number is required </mat-error>
+                    <mat-error *ngIf="associationForm.get('contactNumber')?.hasError('invalidContactNumber')">
+                        {{ associationForm.get('contactNumber')?.getError('invalidContactNumber')?.message }}
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Mat-select for Archive Status -->
+                <mat-form-field class="w-full">
+                    <mat-label>Archive Status</mat-label>
+                    <mat-select formControlName="archiveStatus">
+                        <mat-option *ngFor="let status of archiveStatusOptions" [value]="status">
+                            {{ status }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- Default Mat-input for other types -->
+                <mat-form-field class="w-full">
+                    <mat-label>Address</mat-label>
+                    <input matInput formControlName="address" />
+                </mat-form-field>
+
+                <!-- Mat-select for Zone -->
+                <mat-form-field class="w-full">
+                    <mat-label>Zone</mat-label>
+                    <mat-select formControlName="zone" (selectionChange)="onZoneChange($event.value)">
+                        <mat-option *ngFor="let zone of zones" [value]="zone.name">
+                            {{ zone.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- Mat-select for Sub Zone -->
+                <mat-form-field class="w-full" *ngIf="associationForm.get('zone')?.value">
+                    <mat-label>Sub Zone</mat-label>
+                    <mat-select formControlName="subZone">
+                        <mat-option *ngFor="let subZone of filteredSubZones" [value]="subZone.name">
+                            {{ subZone.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- Default Mat-input for other types -->
+                <mat-form-field class="w-full">
+                    <mat-label>Keywords</mat-label>
+                    <input matInput formControlName="keywords" />
+                </mat-form-field>
+
+                <!-- Default Mat-input for other types -->
+                <!-- <mat-form-field class="w-full">
+          <mat-label>CreatedBy</mat-label>
+          <input matInput formControlName="createdBy" >
+        </mat-form-field> -->
+
+                <!-- Mat-datepicker for Date fields -->
+                <!-- <mat-form-field class="w-full">
+            <mat-label>CreatedDate</mat-label>
+            <input matInput [matDatepicker]="pickercreatedDate" formControlName="createdDate">
+            <mat-datepicker-toggle matSuffix [for]="pickercreatedDate"></mat-datepicker-toggle>
+            <mat-datepicker #pickercreatedDate></mat-datepicker>
+        </mat-form-field> -->
+
+                <!-- Default Mat-input for other types -->
+                <!-- <mat-form-field class="w-full">
+          <mat-label>LastModifiedBy</mat-label>
+          <input matInput formControlName="lastModifiedBy" >
+        </mat-form-field> -->
+
+                <!-- Mat-datepicker for Date fields -->
+                <!-- <mat-form-field class="w-full">
+            <mat-label>LastModifiedDate</mat-label>
+            <input matInput [matDatepicker]="pickerlastModifiedDate" formControlName="lastModifiedDate">
+            <mat-datepicker-toggle matSuffix [for]="pickerlastModifiedDate"></mat-datepicker-toggle>
+            <mat-datepicker #pickerlastModifiedDate></mat-datepicker>
+        </mat-form-field> -->
+            </form>
+            <div class="mt-6 flex items-center justify-end border-t pt-6">
+                <button mat-button (click)="closeDrawer()">Cancel</button>
+                <button mat-flat-button color="primary" class="ml-3" (click)="save()" [disabled]="associationForm.invalid">Save</button>
+            </div>
+        </div>
+    </mat-drawer>
+</mat-drawer-container>

@@ -1,0 +1,124 @@
+<!-- Reusable form component template -->
+<form class="flex h-full flex-col" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="flex items-center justify-between border-b pb-4">
+    <h2 class="text-2xl font-bold">
+      {{ heading || (isEditMode ? 'Edit MaintenanceLog' : 'New MaintenanceLog') }}
+    </h2>
+    <mat-icon *ngIf="isSaving" class="animate-spin">autorenew</mat-icon>
+  </div>
+
+  <div class="flex-auto space-y-4 overflow-y-auto pt-6">
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>MaintenanceLogCode</mat-label>
+      <input matInput formControlName="maintenanceLogCode" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>LogDate</mat-label>
+      <input matInput [matDatepicker]="pickerlogDate" formControlName="logDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerlogDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerlogDate></mat-datepicker>
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>LogType</mat-label>
+      <mat-select formControlName="logType">
+        <mat-option *ngFor="let option of maintenanceLogTypeOptions" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>Cost</mat-label>
+      <input matInput formControlName="cost" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>Vendor</mat-label>
+      <input matInput formControlName="vendor" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>NextServiceDate</mat-label>
+      <input matInput [matDatepicker]="pickernextServiceDate" formControlName="nextServiceDate">
+      <mat-datepicker-toggle matSuffix [for]="pickernextServiceDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickernextServiceDate></mat-datepicker>
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>Note</mat-label>
+      <input matInput formControlName="note" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>CreatedBy</mat-label>
+      <input matInput formControlName="createdBy" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>CreatedDate</mat-label>
+      <input matInput [matDatepicker]="pickercreatedDate" formControlName="createdDate">
+      <mat-datepicker-toggle matSuffix [for]="pickercreatedDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickercreatedDate></mat-datepicker>
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>LastModifiedBy</mat-label>
+      <input matInput formControlName="lastModifiedBy" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>LastModifiedDate</mat-label>
+      <input matInput [matDatepicker]="pickerlastModifiedDate" formControlName="lastModifiedDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerlastModifiedDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerlastModifiedDate></mat-datepicker>
+    </mat-form-field>
+      
+    
+
+    
+    
+  </div>
+
+  <div *ngIf="errorMessage" class="mt-2 rounded bg-warn-100 px-4 py-2 text-warn-900">
+    {{ errorMessage }}
+  </div>
+
+  <div class="mt-6 flex items-center justify-end border-t pt-6">
+    <button type="button" mat-button (click)="onCancel()">Cancel</button>
+    <button type="submit" mat-flat-button color="primary" class="ml-3" [disabled]="form.invalid || isSaving">
+      <span *ngIf="!isSaving">Save</span>
+      <span *ngIf="isSaving">Saving…</span>
+    </button>
+  </div>
+</form>

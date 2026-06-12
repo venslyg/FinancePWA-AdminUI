@@ -1,0 +1,163 @@
+<!-- Reusable form component template -->
+<form class="flex h-full flex-col" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="flex items-center justify-between border-b pb-4">
+    <h2 class="text-2xl font-bold">
+      {{ heading || (isEditMode ? 'Edit LiabilityLog' : 'New LiabilityLog') }}
+    </h2>
+    <mat-icon *ngIf="isSaving" class="animate-spin">autorenew</mat-icon>
+  </div>
+
+  <div class="flex-auto space-y-4 overflow-y-auto pt-6">
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>BranchCode</mat-label>
+      <input matInput formControlName="branchCode" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>LiabilityCode</mat-label>
+      <input matInput formControlName="liabilityCode" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>LoanFrom</mat-label>
+      <input matInput formControlName="loanFrom" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>LiabilityType</mat-label>
+      <mat-select formControlName="liabilityType">
+        <mat-option *ngFor="let option of liabilityTypeOptions" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>TotalLoanAmount</mat-label>
+      <input matInput formControlName="totalLoanAmount" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>StartDate</mat-label>
+      <input matInput [matDatepicker]="pickerstartDate" formControlName="startDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerstartDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerstartDate></mat-datepicker>
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>EndDate</mat-label>
+      <input matInput [matDatepicker]="pickerendDate" formControlName="endDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerendDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerendDate></mat-datepicker>
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>InterestPercentage</mat-label>
+      <input matInput formControlName="interestPercentage" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>MonthlyPaymentAmount</mat-label>
+      <input matInput formControlName="monthlyPaymentAmount" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>PrincipalPaid</mat-label>
+      <input matInput formControlName="principalPaid" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>BalanceToPay</mat-label>
+      <input matInput formControlName="balanceToPay" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let option of approvalStatusOptions" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>CreatedBy</mat-label>
+      <input matInput formControlName="createdBy" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>CreatedDate</mat-label>
+      <input matInput [matDatepicker]="pickercreatedDate" formControlName="createdDate">
+      <mat-datepicker-toggle matSuffix [for]="pickercreatedDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickercreatedDate></mat-datepicker>
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>LastModifiedBy</mat-label>
+      <input matInput formControlName="lastModifiedBy" >
+    </mat-form-field>
+      
+    
+      
+    <mat-form-field class="w-full">
+      <mat-label>LastModifiedDate</mat-label>
+      <input matInput [matDatepicker]="pickerlastModifiedDate" formControlName="lastModifiedDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerlastModifiedDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerlastModifiedDate></mat-datepicker>
+    </mat-form-field>
+      
+    
+
+    
+    
+  </div>
+
+  <div *ngIf="errorMessage" class="mt-2 rounded bg-warn-100 px-4 py-2 text-warn-900">
+    {{ errorMessage }}
+  </div>
+
+  <div class="mt-6 flex items-center justify-end border-t pt-6">
+    <button type="button" mat-button (click)="onCancel()">Cancel</button>
+    <button type="submit" mat-flat-button color="primary" class="ml-3" [disabled]="form.invalid || isSaving">
+      <span *ngIf="!isSaving">Save</span>
+      <span *ngIf="isSaving">Saving…</span>
+    </button>
+  </div>
+</form>

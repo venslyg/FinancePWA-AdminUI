@@ -1,0 +1,12 @@
+// This is an EJS template. It generates the enum file.
+export enum BudgetAlertStatus {
+  
+  NORMAL = 'NORMAL',
+  
+  WARNING_80_PERCENT = 'WARNING_80_PERCENT',
+  
+  RED_ALERT_100_PERCENT = 'RED_ALERT_100_PERCENT',
+  
+  NEED_APPROVAL = 'NEED_APPROVAL'
+  
+}
