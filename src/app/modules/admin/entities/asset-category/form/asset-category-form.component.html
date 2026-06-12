@@ -1,24 +1,24 @@
 <!-- Reusable form component template -->
-<form class="flex h-full flex-col" [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="flex items-center justify-between border-b pb-4">
+<form class="flex flex-col h-full" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="flex items-center justify-between pb-4 border-b">
     <h2 class="text-2xl font-bold">
       {{ heading || (isEditMode ? 'Edit AssetCategory' : 'New AssetCategory') }}
     </h2>
     <mat-icon *ngIf="isSaving" class="animate-spin">autorenew</mat-icon>
   </div>
 
-  <div class="flex-auto space-y-4 overflow-y-auto pt-6">
+  <div class="flex-auto pt-6 space-y-4 overflow-y-auto">
     
       
     <mat-form-field class="w-full">
-      <mat-label>AssetCategoryCode</mat-label>
+      <mat-label>Asset Category Code</mat-label>
       <input matInput formControlName="assetCategoryCode" >
     </mat-form-field>
       
     
       
     <mat-form-field class="w-full">
-      <mat-label>AssetCategoryName</mat-label>
+      <mat-label>Asset Category Name</mat-label>
       <input matInput formControlName="assetCategoryName" >
     </mat-form-field>
       
@@ -29,11 +29,11 @@
       <input matInput formControlName="description" >
     </mat-form-field></div>
 
-  <div *ngIf="errorMessage" class="mt-2 rounded bg-warn-100 px-4 py-2 text-warn-900">
+  <div *ngIf="errorMessage" class="px-4 py-2 mt-2 rounded bg-warn-100 text-warn-900">
     {{ errorMessage }}
   </div>
 
-  <div class="mt-6 flex items-center justify-end border-t pt-6">
+  <div class="flex items-center justify-end pt-6 mt-6 border-t">
     <button type="button" mat-button (click)="onCancel()">Cancel</button>
     <button type="submit" mat-flat-button color="primary" class="ml-3" [disabled]="form.invalid || isSaving">
       <span *ngIf="!isSaving">Save</span>
