@@ -1,7 +1,20 @@
 <!-- This is an EJS template. It generates the HTML for the list component. -->
 
 <mat-drawer-container class="absolute h-full w-full bg-transparent">
-  <!-- Main Content (The Table) -->
+    <mat-drawer #filterDrawer mode="over" position="start" class="w-full max-w-sm">
+    <div class="flex h-full flex-col bg-card">
+      <div class="flex items-center justify-between border-b px-6 py-4">
+        <h2 class="text-xl font-semibold">Filters</h2>
+        <button mat-icon-button type="button" (click)="closeFilterDrawer()">
+          <mat-icon [svgIcon]="'heroicons_mini:x-mark'"></mat-icon>
+        </button>
+      </div>
+
+      <div class="flex flex-auto items-center justify-center px-6 py-8 text-center text-sm text-slate-500">
+        Filtering controls are not configured for this list yet.
+      </div>
+    </div>
+  </mat-drawer><!-- Main Content (The Table) -->
   <mat-drawer-content class="flex flex-col">
     <div class="absolute inset-0 flex min-w-0 flex-col overflow-hidden">
 
@@ -14,7 +27,7 @@
         </div>
         <!-- Actions -->
         <div class="mt-6 flex shrink-0 items-center gap-3 sm:ml-4 sm:mt-0">
-          <button *ngIf="filterFields.length" mat-stroked-button type="button" (click)="openFilterDrawer()">
+          <button mat-stroked-button type="button" (click)="openFilterDrawer()">
             <mat-icon [svgIcon]="'heroicons_outline:funnel'"></mat-icon>
             <span class="ml-2">Filters</span>
           </button>
@@ -117,4 +130,5 @@
     </div>
   </mat-drawer>
 </mat-drawer-container>
+
 
