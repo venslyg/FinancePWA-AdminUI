@@ -33,7 +33,7 @@ export class ExpenseSubCategoryService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `/api/expense-sub-categorys`;
+  protected resourceUrl = `/api/expense-sub-categories`;
 
   create(payload: NewExpenseSubCategory): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);

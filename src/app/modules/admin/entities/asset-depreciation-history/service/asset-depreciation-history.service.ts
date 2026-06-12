@@ -35,7 +35,7 @@ export class AssetDepreciationHistoryService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `/api/asset-depreciation-historys`;
+  protected resourceUrl = `/api/asset-depreciation-histories`;
 
   create(payload: NewAssetDepreciationHistory): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);

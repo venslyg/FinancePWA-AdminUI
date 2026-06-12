@@ -35,7 +35,7 @@ export class ExpenseEntryService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `/api/expense-entrys`;
+  protected resourceUrl = `/api/expense-entries`;
 
   create(payload: NewExpenseEntry): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);

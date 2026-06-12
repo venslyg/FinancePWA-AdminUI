@@ -33,7 +33,7 @@ export class AssetCategoryService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `/api/asset-categorys`;
+  protected resourceUrl = `/api/asset-categories`;
 
   create(payload: NewAssetCategory): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);

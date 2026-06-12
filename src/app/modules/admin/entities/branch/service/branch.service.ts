@@ -33,7 +33,7 @@ export class BranchService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `/api/branchs`;
+  protected resourceUrl = `/api/branches`;
 
   create(payload: NewBranch): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
