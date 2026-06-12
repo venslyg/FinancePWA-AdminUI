@@ -15,14 +15,6 @@ export type AssetSubCategoryFormGroup = FormGroup<{
   
   assetSubCategoryName: FormControl<IAssetSubCategory['assetSubCategoryName']>;
   
-  createdBy: FormControl<IAssetSubCategory['createdBy']>;
-  
-  createdDate: FormControl<IAssetSubCategory['createdDate']>;
-  
-  lastModifiedBy: FormControl<IAssetSubCategory['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IAssetSubCategory['lastModifiedDate']>;
-  
   
 }>;
 
@@ -41,14 +33,6 @@ export class AssetSubCategoryFormService {
       
       assetSubCategoryName: new FormControl(entity.assetSubCategoryName),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -66,3 +50,4 @@ export class AssetSubCategoryFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

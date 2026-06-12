@@ -13,11 +13,11 @@ export type PartialUpdateInventoryItem = Partial<IInventoryItem> & Pick<IInvento
 
 // --- Define REST-safe types by converting Dayjs objects to strings ---
 type RestOf<T extends IInventoryItem | NewInventoryItem | PartialUpdateInventoryItem> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
-  
+
   createdDate?: string | null;
-  
+
   lastModifiedDate?: string | null;
-  
+
 };
 
 export type RestInventoryItem = RestOf<IInventoryItem>;
@@ -33,7 +33,7 @@ export class InventoryItemService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `//api/inventory-items`;
+  protected resourceUrl = `/api/inventory-items`;
 
   create(payload: NewInventoryItem): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
@@ -73,32 +73,32 @@ export class InventoryItemService {
   // --- Date Conversion Helpers ---
   protected convertDateFromClient<T extends IInventoryItem | NewInventoryItem | PartialUpdateInventoryItem>(entity: T): RestOf<T> {
     const copy: any = { ...entity };
-    
+
     if (dayjs.isDayjs(entity.createdDate)) {
       copy.createdDate = entity.createdDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.lastModifiedDate)) {
       copy.lastModifiedDate = entity.lastModifiedDate.toJSON();
     }
-    
+
     return copy;
   }
 
   protected convertDateFromServer(restEntity: RestInventoryItem): IInventoryItem {
     const entity: any = { ...restEntity };
-    
+
     if (entity.createdDate) {
-        entity.createdDate = dayjs(entity.createdDate);
+      entity.createdDate = dayjs(entity.createdDate);
     }
-    
+
     if (entity.lastModifiedDate) {
-        entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
+      entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
     }
-    
+
     return entity;
   }
-  
+
   protected convertResponseFromServer(res: HttpResponse<RestInventoryItem>): HttpResponse<IInventoryItem> {
     return res.clone({ body: res.body ? this.convertDateFromServer(res.body) : null });
   }

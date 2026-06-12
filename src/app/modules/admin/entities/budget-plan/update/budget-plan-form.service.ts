@@ -29,14 +29,6 @@ export type BudgetPlanFormGroup = FormGroup<{
   
   alertStatus: FormControl<IBudgetPlan['alertStatus']>;
   
-  createdBy: FormControl<IBudgetPlan['createdBy']>;
-  
-  createdDate: FormControl<IBudgetPlan['createdDate']>;
-  
-  lastModifiedBy: FormControl<IBudgetPlan['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IBudgetPlan['lastModifiedDate']>;
-  
   
 }>;
 
@@ -69,14 +61,6 @@ export class BudgetPlanFormService {
       
       alertStatus: new FormControl(entity.alertStatus),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -94,3 +78,4 @@ export class BudgetPlanFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

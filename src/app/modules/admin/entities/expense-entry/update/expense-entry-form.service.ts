@@ -19,8 +19,6 @@ export type ExpenseEntryFormGroup = FormGroup<{
   
   expenseSubCategoryCode: FormControl<IExpenseEntry['expenseSubCategoryCode']>;
   
-  createdByUsername: FormControl<IExpenseEntry['createdByUsername']>;
-  
   date: FormControl<IExpenseEntry['date']>;
   
   voucherNo: FormControl<IExpenseEntry['voucherNo']>;
@@ -38,14 +36,6 @@ export type ExpenseEntryFormGroup = FormGroup<{
   vendor: FormControl<IExpenseEntry['vendor']>;
   
   syncStatus: FormControl<IExpenseEntry['syncStatus']>;
-  
-  createdBy: FormControl<IExpenseEntry['createdBy']>;
-  
-  createdDate: FormControl<IExpenseEntry['createdDate']>;
-  
-  lastModifiedBy: FormControl<IExpenseEntry['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IExpenseEntry['lastModifiedDate']>;
   
   
 }>;
@@ -69,8 +59,6 @@ export class ExpenseEntryFormService {
       
       expenseSubCategoryCode: new FormControl(entity.expenseSubCategoryCode),
       
-      createdByUsername: new FormControl(entity.createdByUsername),
-      
       date: new FormControl(entity.date),
       
       voucherNo: new FormControl(entity.voucherNo),
@@ -89,14 +77,6 @@ export class ExpenseEntryFormService {
       
       syncStatus: new FormControl(entity.syncStatus),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -114,3 +94,4 @@ export class ExpenseEntryFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

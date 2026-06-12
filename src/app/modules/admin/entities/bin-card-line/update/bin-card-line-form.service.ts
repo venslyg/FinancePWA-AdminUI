@@ -23,14 +23,6 @@ export type BinCardLineFormGroup = FormGroup<{
   
   runningBalance: FormControl<IBinCardLine['runningBalance']>;
   
-  createdBy: FormControl<IBinCardLine['createdBy']>;
-  
-  createdDate: FormControl<IBinCardLine['createdDate']>;
-  
-  lastModifiedBy: FormControl<IBinCardLine['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IBinCardLine['lastModifiedDate']>;
-  
   
 }>;
 
@@ -57,14 +49,6 @@ export class BinCardLineFormService {
       
       runningBalance: new FormControl(entity.runningBalance),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -82,3 +66,4 @@ export class BinCardLineFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

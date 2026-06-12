@@ -27,14 +27,6 @@ export type DonationTrackerFormGroup = FormGroup<{
   
   notes: FormControl<IDonationTracker['notes']>;
   
-  createdBy: FormControl<IDonationTracker['createdBy']>;
-  
-  createdDate: FormControl<IDonationTracker['createdDate']>;
-  
-  lastModifiedBy: FormControl<IDonationTracker['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IDonationTracker['lastModifiedDate']>;
-  
   
 }>;
 
@@ -65,14 +57,6 @@ export class DonationTrackerFormService {
       
       notes: new FormControl(entity.notes),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -90,3 +74,4 @@ export class DonationTrackerFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

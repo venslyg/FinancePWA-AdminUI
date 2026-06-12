@@ -15,8 +15,6 @@ export type IncomeEntryFormGroup = FormGroup<{
   
   incomeCode: FormControl<IIncomeEntry['incomeCode']>;
   
-  createdByUsername: FormControl<IIncomeEntry['createdByUsername']>;
-  
   date: FormControl<IIncomeEntry['date']>;
   
   receiptNo: FormControl<IIncomeEntry['receiptNo']>;
@@ -34,14 +32,6 @@ export type IncomeEntryFormGroup = FormGroup<{
   receivedBy: FormControl<IIncomeEntry['receivedBy']>;
   
   syncStatus: FormControl<IIncomeEntry['syncStatus']>;
-  
-  createdBy: FormControl<IIncomeEntry['createdBy']>;
-  
-  createdDate: FormControl<IIncomeEntry['createdDate']>;
-  
-  lastModifiedBy: FormControl<IIncomeEntry['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IIncomeEntry['lastModifiedDate']>;
   
   
 }>;
@@ -61,8 +51,6 @@ export class IncomeEntryFormService {
       
       incomeCode: new FormControl(entity.incomeCode),
       
-      createdByUsername: new FormControl(entity.createdByUsername),
-      
       date: new FormControl(entity.date),
       
       receiptNo: new FormControl(entity.receiptNo),
@@ -81,14 +69,6 @@ export class IncomeEntryFormService {
       
       syncStatus: new FormControl(entity.syncStatus),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -106,3 +86,4 @@ export class IncomeEntryFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

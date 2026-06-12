@@ -135,151 +135,7 @@ export class LiabilityLogListComponent implements AfterViewInit, OnInit {
   readonly liabilityTypeOptions = Object.keys(LiabilityType);
   
   readonly approvalStatusOptions = Object.keys(ApprovalStatus);
-  
-
-  // --- Filter configuration ---
-  filterFields: FilterField[] = [
-    
-    {
-      key: 'branchCode',
-      label: 'BranchCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'liabilityCode',
-      label: 'LiabilityCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'loanFrom',
-      label: 'LoanFrom',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'description',
-      label: 'Description',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'liabilityType',
-      label: 'LiabilityType',
-      valueType: 'enum' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['enum'],
-      rawFieldType: 'LiabilityType',
-      enumOptionsKey: 'liabilityTypeOptions'
-    },
-    
-    {
-      key: 'totalLoanAmount',
-      label: 'TotalLoanAmount',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'startDate',
-      label: 'StartDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'LocalDate'
-    },
-    
-    {
-      key: 'endDate',
-      label: 'EndDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'LocalDate'
-    },
-    
-    {
-      key: 'interestPercentage',
-      label: 'InterestPercentage',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'monthlyPaymentAmount',
-      label: 'MonthlyPaymentAmount',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'principalPaid',
-      label: 'PrincipalPaid',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'balanceToPay',
-      label: 'BalanceToPay',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'status',
-      label: 'Status',
-      valueType: 'enum' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['enum'],
-      rawFieldType: 'ApprovalStatus',
-      enumOptionsKey: 'approvalStatusOptions'
-    },
-    
-    {
-      key: 'createdBy',
-      label: 'CreatedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'createdDate',
-      label: 'CreatedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    {
-      key: 'lastModifiedBy',
-      label: 'LastModifiedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'lastModifiedDate',
-      label: 'LastModifiedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    
-  ];
+  filterFields: FilterField[] = [];
 
   filtersForm: FormGroup = this.buildFiltersForm();
 
@@ -289,7 +145,7 @@ export class LiabilityLogListComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'branchCode', 'liabilityCode', 'loanFrom', 'description', 'liabilityType', 'totalLoanAmount', 'startDate', 'endDate', 'interestPercentage', 'monthlyPaymentAmount', 'principalPaid', 'balanceToPay', 'status', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate',  'actions'];
+  displayedColumns: string[] = ['id', 'branchCode', 'liabilityCode', 'loanFrom', 'description', 'liabilityType', 'totalLoanAmount', 'startDate', 'endDate', 'interestPercentage', 'monthlyPaymentAmount', 'principalPaid', 'balanceToPay', 'status',  'actions'];
   dataSource = new MatTableDataSource<ILiabilityLog>();
 
   ngOnInit(): void {
@@ -536,3 +392,4 @@ export class LiabilityLogListComponent implements AfterViewInit, OnInit {
     return field.operators.find(item => item.key === operator);
   }
 }
+

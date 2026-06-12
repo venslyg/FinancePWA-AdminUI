@@ -13,11 +13,11 @@ export type PartialUpdateBudgetPlan = Partial<IBudgetPlan> & Pick<IBudgetPlan, '
 
 // --- Define REST-safe types by converting Dayjs objects to strings ---
 type RestOf<T extends IBudgetPlan | NewBudgetPlan | PartialUpdateBudgetPlan> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
-  
+
   createdDate?: string | null;
-  
+
   lastModifiedDate?: string | null;
-  
+
 };
 
 export type RestBudgetPlan = RestOf<IBudgetPlan>;
@@ -33,7 +33,7 @@ export class BudgetPlanService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `//api/budget-plans`;
+  protected resourceUrl = `/api/budget-plans`;
 
   create(payload: NewBudgetPlan): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
@@ -73,32 +73,32 @@ export class BudgetPlanService {
   // --- Date Conversion Helpers ---
   protected convertDateFromClient<T extends IBudgetPlan | NewBudgetPlan | PartialUpdateBudgetPlan>(entity: T): RestOf<T> {
     const copy: any = { ...entity };
-    
+
     if (dayjs.isDayjs(entity.createdDate)) {
       copy.createdDate = entity.createdDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.lastModifiedDate)) {
       copy.lastModifiedDate = entity.lastModifiedDate.toJSON();
     }
-    
+
     return copy;
   }
 
   protected convertDateFromServer(restEntity: RestBudgetPlan): IBudgetPlan {
     const entity: any = { ...restEntity };
-    
+
     if (entity.createdDate) {
-        entity.createdDate = dayjs(entity.createdDate);
+      entity.createdDate = dayjs(entity.createdDate);
     }
-    
+
     if (entity.lastModifiedDate) {
-        entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
+      entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
     }
-    
+
     return entity;
   }
-  
+
   protected convertResponseFromServer(res: HttpResponse<RestBudgetPlan>): HttpResponse<IBudgetPlan> {
     return res.clone({ body: res.body ? this.convertDateFromServer(res.body) : null });
   }

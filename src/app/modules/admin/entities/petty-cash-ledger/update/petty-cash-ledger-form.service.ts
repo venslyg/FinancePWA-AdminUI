@@ -29,14 +29,6 @@ export type PettyCashLedgerFormGroup = FormGroup<{
   
   referenceNo: FormControl<IPettyCashLedger['referenceNo']>;
   
-  createdBy: FormControl<IPettyCashLedger['createdBy']>;
-  
-  createdDate: FormControl<IPettyCashLedger['createdDate']>;
-  
-  lastModifiedBy: FormControl<IPettyCashLedger['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IPettyCashLedger['lastModifiedDate']>;
-  
   
 }>;
 
@@ -69,14 +61,6 @@ export class PettyCashLedgerFormService {
       
       referenceNo: new FormControl(entity.referenceNo),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -94,3 +78,4 @@ export class PettyCashLedgerFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

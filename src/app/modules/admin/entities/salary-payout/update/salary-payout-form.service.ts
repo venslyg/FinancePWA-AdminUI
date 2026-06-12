@@ -27,14 +27,6 @@ export type SalaryPayoutFormGroup = FormGroup<{
   
   payoutDate: FormControl<ISalaryPayout['payoutDate']>;
   
-  createdBy: FormControl<ISalaryPayout['createdBy']>;
-  
-  createdDate: FormControl<ISalaryPayout['createdDate']>;
-  
-  lastModifiedBy: FormControl<ISalaryPayout['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<ISalaryPayout['lastModifiedDate']>;
-  
   
 }>;
 
@@ -65,14 +57,6 @@ export class SalaryPayoutFormService {
       
       payoutDate: new FormControl(entity.payoutDate),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -90,3 +74,4 @@ export class SalaryPayoutFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

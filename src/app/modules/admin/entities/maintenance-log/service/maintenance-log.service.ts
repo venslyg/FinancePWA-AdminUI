@@ -13,15 +13,15 @@ export type PartialUpdateMaintenanceLog = Partial<IMaintenanceLog> & Pick<IMaint
 
 // --- Define REST-safe types by converting Dayjs objects to strings ---
 type RestOf<T extends IMaintenanceLog | NewMaintenanceLog | PartialUpdateMaintenanceLog> = Omit<T, 'logDate' | 'nextServiceDate' | 'createdDate' | 'lastModifiedDate'> & {
-  
+
   logDate?: string | null;
-  
+
   nextServiceDate?: string | null;
-  
+
   createdDate?: string | null;
-  
+
   lastModifiedDate?: string | null;
-  
+
 };
 
 export type RestMaintenanceLog = RestOf<IMaintenanceLog>;
@@ -37,7 +37,7 @@ export class MaintenanceLogService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `//api/maintenance-logs`;
+  protected resourceUrl = `/api/maintenance-logs`;
 
   create(payload: NewMaintenanceLog): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
@@ -77,48 +77,48 @@ export class MaintenanceLogService {
   // --- Date Conversion Helpers ---
   protected convertDateFromClient<T extends IMaintenanceLog | NewMaintenanceLog | PartialUpdateMaintenanceLog>(entity: T): RestOf<T> {
     const copy: any = { ...entity };
-    
+
     if (dayjs.isDayjs(entity.logDate)) {
       copy.logDate = entity.logDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.nextServiceDate)) {
       copy.nextServiceDate = entity.nextServiceDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.createdDate)) {
       copy.createdDate = entity.createdDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.lastModifiedDate)) {
       copy.lastModifiedDate = entity.lastModifiedDate.toJSON();
     }
-    
+
     return copy;
   }
 
   protected convertDateFromServer(restEntity: RestMaintenanceLog): IMaintenanceLog {
     const entity: any = { ...restEntity };
-    
+
     if (entity.logDate) {
-        entity.logDate = dayjs(entity.logDate);
+      entity.logDate = dayjs(entity.logDate);
     }
-    
+
     if (entity.nextServiceDate) {
-        entity.nextServiceDate = dayjs(entity.nextServiceDate);
+      entity.nextServiceDate = dayjs(entity.nextServiceDate);
     }
-    
+
     if (entity.createdDate) {
-        entity.createdDate = dayjs(entity.createdDate);
+      entity.createdDate = dayjs(entity.createdDate);
     }
-    
+
     if (entity.lastModifiedDate) {
-        entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
+      entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
     }
-    
+
     return entity;
   }
-  
+
   protected convertResponseFromServer(res: HttpResponse<RestMaintenanceLog>): HttpResponse<IMaintenanceLog> {
     return res.clone({ body: res.body ? this.convertDateFromServer(res.body) : null });
   }

@@ -13,13 +13,13 @@ export type PartialUpdateExpenseEntry = Partial<IExpenseEntry> & Pick<IExpenseEn
 
 // --- Define REST-safe types by converting Dayjs objects to strings ---
 type RestOf<T extends IExpenseEntry | NewExpenseEntry | PartialUpdateExpenseEntry> = Omit<T, 'date' | 'createdDate' | 'lastModifiedDate'> & {
-  
+
   date?: string | null;
-  
+
   createdDate?: string | null;
-  
+
   lastModifiedDate?: string | null;
-  
+
 };
 
 export type RestExpenseEntry = RestOf<IExpenseEntry>;
@@ -35,7 +35,7 @@ export class ExpenseEntryService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `//api/expense-entrys`;
+  protected resourceUrl = `/api/expense-entries`;
 
   create(payload: NewExpenseEntry): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
@@ -75,40 +75,40 @@ export class ExpenseEntryService {
   // --- Date Conversion Helpers ---
   protected convertDateFromClient<T extends IExpenseEntry | NewExpenseEntry | PartialUpdateExpenseEntry>(entity: T): RestOf<T> {
     const copy: any = { ...entity };
-    
+
     if (dayjs.isDayjs(entity.date)) {
       copy.date = entity.date.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.createdDate)) {
       copy.createdDate = entity.createdDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.lastModifiedDate)) {
       copy.lastModifiedDate = entity.lastModifiedDate.toJSON();
     }
-    
+
     return copy;
   }
 
   protected convertDateFromServer(restEntity: RestExpenseEntry): IExpenseEntry {
     const entity: any = { ...restEntity };
-    
+
     if (entity.date) {
-        entity.date = dayjs(entity.date);
+      entity.date = dayjs(entity.date);
     }
-    
+
     if (entity.createdDate) {
-        entity.createdDate = dayjs(entity.createdDate);
+      entity.createdDate = dayjs(entity.createdDate);
     }
-    
+
     if (entity.lastModifiedDate) {
-        entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
+      entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
     }
-    
+
     return entity;
   }
-  
+
   protected convertResponseFromServer(res: HttpResponse<RestExpenseEntry>): HttpResponse<IExpenseEntry> {
     return res.clone({ body: res.body ? this.convertDateFromServer(res.body) : null });
   }

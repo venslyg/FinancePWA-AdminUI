@@ -31,14 +31,6 @@ export type AssetRegisterFormGroup = FormGroup<{
   
   accumulatedDepreciation: FormControl<IAssetRegister['accumulatedDepreciation']>;
   
-  createdBy: FormControl<IAssetRegister['createdBy']>;
-  
-  createdDate: FormControl<IAssetRegister['createdDate']>;
-  
-  lastModifiedBy: FormControl<IAssetRegister['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IAssetRegister['lastModifiedDate']>;
-  
   
 }>;
 
@@ -73,14 +65,6 @@ export class AssetRegisterFormService {
       
       accumulatedDepreciation: new FormControl(entity.accumulatedDepreciation),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -98,3 +82,4 @@ export class AssetRegisterFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

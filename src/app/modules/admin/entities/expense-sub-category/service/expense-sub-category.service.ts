@@ -13,11 +13,11 @@ export type PartialUpdateExpenseSubCategory = Partial<IExpenseSubCategory> & Pic
 
 // --- Define REST-safe types by converting Dayjs objects to strings ---
 type RestOf<T extends IExpenseSubCategory | NewExpenseSubCategory | PartialUpdateExpenseSubCategory> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
-  
+
   createdDate?: string | null;
-  
+
   lastModifiedDate?: string | null;
-  
+
 };
 
 export type RestExpenseSubCategory = RestOf<IExpenseSubCategory>;
@@ -33,7 +33,7 @@ export class ExpenseSubCategoryService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `//api/expense-sub-categorys`;
+  protected resourceUrl = `/api/expense-sub-categories`;
 
   create(payload: NewExpenseSubCategory): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
@@ -73,32 +73,32 @@ export class ExpenseSubCategoryService {
   // --- Date Conversion Helpers ---
   protected convertDateFromClient<T extends IExpenseSubCategory | NewExpenseSubCategory | PartialUpdateExpenseSubCategory>(entity: T): RestOf<T> {
     const copy: any = { ...entity };
-    
+
     if (dayjs.isDayjs(entity.createdDate)) {
       copy.createdDate = entity.createdDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.lastModifiedDate)) {
       copy.lastModifiedDate = entity.lastModifiedDate.toJSON();
     }
-    
+
     return copy;
   }
 
   protected convertDateFromServer(restEntity: RestExpenseSubCategory): IExpenseSubCategory {
     const entity: any = { ...restEntity };
-    
+
     if (entity.createdDate) {
-        entity.createdDate = dayjs(entity.createdDate);
+      entity.createdDate = dayjs(entity.createdDate);
     }
-    
+
     if (entity.lastModifiedDate) {
-        entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
+      entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
     }
-    
+
     return entity;
   }
-  
+
   protected convertResponseFromServer(res: HttpResponse<RestExpenseSubCategory>): HttpResponse<IExpenseSubCategory> {
     return res.clone({ body: res.body ? this.convertDateFromServer(res.body) : null });
   }

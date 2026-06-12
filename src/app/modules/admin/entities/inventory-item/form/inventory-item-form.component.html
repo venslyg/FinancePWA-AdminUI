@@ -55,45 +55,7 @@
     <mat-form-field class="w-full">
       <mat-label>RunningStockCount</mat-label>
       <input matInput formControlName="runningStockCount" >
-    </mat-form-field>
-      
-    
-      
-    <mat-form-field class="w-full">
-      <mat-label>CreatedBy</mat-label>
-      <input matInput formControlName="createdBy" >
-    </mat-form-field>
-      
-    
-      
-    <mat-form-field class="w-full">
-      <mat-label>CreatedDate</mat-label>
-      <input matInput [matDatepicker]="pickercreatedDate" formControlName="createdDate">
-      <mat-datepicker-toggle matSuffix [for]="pickercreatedDate"></mat-datepicker-toggle>
-      <mat-datepicker #pickercreatedDate></mat-datepicker>
-    </mat-form-field>
-      
-    
-      
-    <mat-form-field class="w-full">
-      <mat-label>LastModifiedBy</mat-label>
-      <input matInput formControlName="lastModifiedBy" >
-    </mat-form-field>
-      
-    
-      
-    <mat-form-field class="w-full">
-      <mat-label>LastModifiedDate</mat-label>
-      <input matInput [matDatepicker]="pickerlastModifiedDate" formControlName="lastModifiedDate">
-      <mat-datepicker-toggle matSuffix [for]="pickerlastModifiedDate"></mat-datepicker-toggle>
-      <mat-datepicker #pickerlastModifiedDate></mat-datepicker>
-    </mat-form-field>
-      
-    
-
-    
-    
-  </div>
+    </mat-form-field></div>
 
   <div *ngIf="errorMessage" class="mt-2 rounded bg-warn-100 px-4 py-2 text-warn-900">
     {{ errorMessage }}
@@ -107,3 +69,4 @@
     </button>
   </div>
 </form>
+

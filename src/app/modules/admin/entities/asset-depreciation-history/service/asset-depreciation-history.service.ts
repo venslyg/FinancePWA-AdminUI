@@ -13,13 +13,13 @@ export type PartialUpdateAssetDepreciationHistory = Partial<IAssetDepreciationHi
 
 // --- Define REST-safe types by converting Dayjs objects to strings ---
 type RestOf<T extends IAssetDepreciationHistory | NewAssetDepreciationHistory | PartialUpdateAssetDepreciationHistory> = Omit<T, 'depreciationDate' | 'createdDate' | 'lastModifiedDate'> & {
-  
+
   depreciationDate?: string | null;
-  
+
   createdDate?: string | null;
-  
+
   lastModifiedDate?: string | null;
-  
+
 };
 
 export type RestAssetDepreciationHistory = RestOf<IAssetDepreciationHistory>;
@@ -35,7 +35,7 @@ export class AssetDepreciationHistoryService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `//api/asset-depreciation-historys`;
+  protected resourceUrl = `/api/asset-depreciation-histories`;
 
   create(payload: NewAssetDepreciationHistory): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
@@ -75,40 +75,40 @@ export class AssetDepreciationHistoryService {
   // --- Date Conversion Helpers ---
   protected convertDateFromClient<T extends IAssetDepreciationHistory | NewAssetDepreciationHistory | PartialUpdateAssetDepreciationHistory>(entity: T): RestOf<T> {
     const copy: any = { ...entity };
-    
+
     if (dayjs.isDayjs(entity.depreciationDate)) {
       copy.depreciationDate = entity.depreciationDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.createdDate)) {
       copy.createdDate = entity.createdDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.lastModifiedDate)) {
       copy.lastModifiedDate = entity.lastModifiedDate.toJSON();
     }
-    
+
     return copy;
   }
 
   protected convertDateFromServer(restEntity: RestAssetDepreciationHistory): IAssetDepreciationHistory {
     const entity: any = { ...restEntity };
-    
+
     if (entity.depreciationDate) {
-        entity.depreciationDate = dayjs(entity.depreciationDate);
+      entity.depreciationDate = dayjs(entity.depreciationDate);
     }
-    
+
     if (entity.createdDate) {
-        entity.createdDate = dayjs(entity.createdDate);
+      entity.createdDate = dayjs(entity.createdDate);
     }
-    
+
     if (entity.lastModifiedDate) {
-        entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
+      entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
     }
-    
+
     return entity;
   }
-  
+
   protected convertResponseFromServer(res: HttpResponse<RestAssetDepreciationHistory>): HttpResponse<IAssetDepreciationHistory> {
     return res.clone({ body: res.body ? this.convertDateFromServer(res.body) : null });
   }

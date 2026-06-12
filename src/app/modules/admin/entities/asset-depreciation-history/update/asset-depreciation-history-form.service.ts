@@ -19,14 +19,6 @@ export type AssetDepreciationHistoryFormGroup = FormGroup<{
   
   processedBy: FormControl<IAssetDepreciationHistory['processedBy']>;
   
-  createdBy: FormControl<IAssetDepreciationHistory['createdBy']>;
-  
-  createdDate: FormControl<IAssetDepreciationHistory['createdDate']>;
-  
-  lastModifiedBy: FormControl<IAssetDepreciationHistory['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IAssetDepreciationHistory['lastModifiedDate']>;
-  
   
 }>;
 
@@ -49,14 +41,6 @@ export class AssetDepreciationHistoryFormService {
       
       processedBy: new FormControl(entity.processedBy),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -74,3 +58,4 @@ export class AssetDepreciationHistoryFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

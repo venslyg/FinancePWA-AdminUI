@@ -132,110 +132,7 @@ export class ChurchStaffListComponent implements AfterViewInit, OnInit {
 
   
   readonly staffTypeOptions = Object.keys(StaffType);
-  
-
-  // --- Filter configuration ---
-  filterFields: FilterField[] = [
-    
-    {
-      key: 'staffCode',
-      label: 'StaffCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'branchCode',
-      label: 'BranchCode',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'fullName',
-      label: 'FullName',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'position',
-      label: 'Position',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'staffType',
-      label: 'StaffType',
-      valueType: 'enum' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['enum'],
-      rawFieldType: 'StaffType',
-      enumOptionsKey: 'staffTypeOptions'
-    },
-    
-    {
-      key: 'contactNumber',
-      label: 'ContactNumber',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'hourlyRateOrMonthlySalary',
-      label: 'HourlyRateOrMonthlySalary',
-      valueType: 'number' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['number'],
-      rawFieldType: 'BigDecimal'
-    },
-    
-    {
-      key: 'isActive',
-      label: 'IsActive',
-      valueType: 'boolean' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['boolean'],
-      rawFieldType: 'Boolean'
-    },
-    
-    {
-      key: 'createdBy',
-      label: 'CreatedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'createdDate',
-      label: 'CreatedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    {
-      key: 'lastModifiedBy',
-      label: 'LastModifiedBy',
-      valueType: 'string' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['string'],
-      rawFieldType: 'String'
-    },
-    
-    {
-      key: 'lastModifiedDate',
-      label: 'LastModifiedDate',
-      valueType: 'date' as FilterValueType,
-      operators: FILTER_OPERATOR_LIBRARY['date'],
-      rawFieldType: 'Instant'
-    },
-    
-    
-  ];
+  filterFields: FilterField[] = [];
 
   filtersForm: FormGroup = this.buildFiltersForm();
 
@@ -245,7 +142,7 @@ export class ChurchStaffListComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'staffCode', 'branchCode', 'fullName', 'position', 'staffType', 'contactNumber', 'hourlyRateOrMonthlySalary', 'isActive', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate',  'actions'];
+  displayedColumns: string[] = ['id', 'staffCode', 'branchCode', 'fullName', 'position', 'staffType', 'contactNumber', 'hourlyRateOrMonthlySalary', 'isActive',  'actions'];
   dataSource = new MatTableDataSource<IChurchStaff>();
 
   ngOnInit(): void {
@@ -492,3 +389,4 @@ export class ChurchStaffListComponent implements AfterViewInit, OnInit {
     return field.operators.find(item => item.key === operator);
   }
 }
+

@@ -1,123 +1,197 @@
-﻿/* eslint-disable */
+/* eslint-disable */
 import { FuseNavigationItem } from '@fuse/components/navigation';
 
-export const defaultNavigation: FuseNavigationItem[] = [
+const financeNavigation: FuseNavigationItem[] = [
     {
-        id   : 'dashboard',
+        id: 'dashboard',
         title: 'Dashboard',
-        type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/dashboard'
+        type: 'basic',
+        icon: 'heroicons_outline:chart-pie',
+        link: '/dashboard',
     },
     {
-        id   : 'land',
-        title: 'Land',
-        type : 'basic',
-        icon : 'heroicons_outline:map',
-        link : '/land'
+        id: 'branch',
+        title: 'Branches',
+        type: 'basic',
+        icon: 'heroicons_outline:map',
+        link: '/branch',
     },
     {
-        id   : 'employee',
-        title: 'Employee',
-        type : 'basic',
-        icon : 'heroicons_outline:users',
-        link : '/employee'
+        id: 'accounts',
+        title: 'Accounts',
+        type: 'collapsable',
+        icon: 'heroicons_outline:banknotes',
+        children: [
+            {
+                id: 'account-set',
+                title: 'Chart of Accounts',
+                type: 'basic',
+                icon: 'heroicons_outline:briefcase',
+                link: '/account-set',
+            },
+            {
+                id: 'income-entry',
+                title: 'Income Entries',
+                type: 'basic',
+                icon: 'heroicons_outline:currency-dollar',
+                link: '/income-entry',
+            },
+            {
+                id: 'expense-entry',
+                title: 'Expense Entries',
+                type: 'basic',
+                icon: 'heroicons_outline:document-text',
+                link: '/expense-entry',
+            },
+            {
+                id: 'petty-cash-ledger',
+                title: 'Petty Cash Ledger',
+                type: 'basic',
+                icon: 'heroicons_outline:calculator',
+                link: '/petty-cash-ledger',
+            },
+            {
+                id: 'bank-ledger',
+                title: 'Bank Ledger',
+                type: 'basic',
+                icon: 'heroicons_outline:banknotes',
+                link: '/bank-ledger',
+            },
+            {
+                id: 'donation-tracker',
+                title: 'Donation Tracker',
+                type: 'basic',
+                icon: 'heroicons_outline:heart',
+                link: '/donation-tracker',
+            },
+            {
+                id: 'liability-log',
+                title: 'Liability Log',
+                type: 'basic',
+                icon: 'heroicons_outline:document-duplicate',
+                link: '/liability-log',
+            },
+        ],
     },
     {
-        id   : 'advance',
-        title: 'Advance Payments',
-        type : 'basic',
-        icon : 'heroicons_outline:currency-dollar',
-        link : '/advance'
+        id: 'expense',
+        title: 'Expense',
+        type: 'collapsable',
+        icon: 'heroicons_outline:folder',
+        children: [
+            {
+                id: 'expense-category',
+                title: 'Expense Categories',
+                type: 'basic',
+                icon: 'heroicons_outline:folder',
+                link: '/expense-category',
+            },
+            {
+                id: 'expense-sub-category',
+                title: 'Expense Sub categories',
+                type: 'basic',
+                icon: 'heroicons_outline:folder-open',
+                link: '/expense-sub-category',
+            },
+        ],
     },
-  
     {
-        id   : 'loan',
-        title: 'Loan',
-        type : 'basic',
-        icon : 'heroicons_outline:banknotes',
-        link : '/loan'
+        id: 'assets',
+        title: 'Assets',
+        type: 'collapsable',
+        icon: 'heroicons_outline:cube',
+        children: [
+            {
+                id: 'asset-category',
+                title: 'Asset Categories',
+                type: 'basic',
+                icon: 'heroicons_outline:archive-box',
+                link: '/asset-category',
+            },
+            {
+                id: 'asset-sub-category',
+                title: 'Asset Sub categories',
+                type: 'basic',
+                icon: 'heroicons_outline:archive-box-x-mark',
+                link: '/asset-sub-category',
+            },
+            {
+                id: 'asset-register',
+                title: 'Asset Register',
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/asset-register',
+            },
+            {
+                id: 'asset-depreciation-history',
+                title: 'Depreciation History',
+                type: 'basic',
+                icon: 'heroicons_outline:clock',
+                link: '/asset-depreciation-history',
+            },
+            {
+                id: 'maintenance-log',
+                title: 'Maintenance Log',
+                type: 'basic',
+                icon: 'heroicons_outline:wrench-screwdriver',
+                link: '/maintenance-log',
+            },
+        ],
     },
     {
-        id   : 'role',
-        title: 'Role Management',
-        type : 'basic',
-        icon : 'heroicons_outline:briefcase',
-        link : '/role'
+        id: 'inventory',
+        title: 'Inventory',
+        type: 'collapsable',
+        icon: 'heroicons_outline:shopping-bag',
+        children: [
+            {
+                id: 'inventory-item',
+                title: 'Inventory Items',
+                type: 'basic',
+                icon: 'heroicons_outline:shopping-bag',
+                link: '/inventory-item',
+            },
+            {
+                id: 'bin-card-line',
+                title: 'Bin Card Lines',
+                type: 'basic',
+                icon: 'heroicons_outline:list-bullet',
+                link: '/bin-card-line',
+            },
+        ],
     },
     {
-        id   : 'salary',
-        title: 'Salary',
-        type : 'basic',
-        icon : 'heroicons_outline:document-text',
-        link : '/salary-sheet'
-    },{
-        id   : 'epf',
-        title: 'EPF Report',
-        type : 'basic',
-        icon : 'heroicons_outline:banknotes',
-        link : '/epf'
-    }
+        id: 'budget-plan',
+        title: 'Budget Plans',
+        type: 'basic',
+        icon: 'heroicons_outline:scale',
+        link: '/budget-plan',
+    },
+    {
+        id: 'people',
+        title: 'People',
+        type: 'collapsable',
+        icon: 'heroicons_outline:users',
+        children: [
+            {
+                id: 'church-staff',
+                title: 'Church Staff',
+                type: 'basic',
+                icon: 'heroicons_outline:users',
+                link: '/church-staff',
+            },
+            {
+                id: 'salary-payout',
+                title: 'Salary Payouts',
+                type: 'basic',
+                icon: 'heroicons_outline:receipt-percent',
+                link: '/salary-payout',
+            },
+        ],
+    },
 ];
 
-export const compactNavigation: FuseNavigationItem[] = [
-    {
-        id   : 'dashboard',
-        title: 'Dashboard',
-        type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/dashboard'
-    },
-    {
-        id   : 'land',
-        title: 'Land',
-        type : 'basic',
-        icon : 'heroicons_outline:map',
-        link : '/land'
-    },
-    {
-        id   : 'employee',
-        title: 'Employees',
-        type : 'basic',
-        icon : 'heroicons_outline:users',
-        link : '/employee'
-    },
-    {
-        id   : 'advance',
-        title: 'Advance Payments',
-        type : 'basic',
-        icon : 'heroicons_outline:currency-dollar',
-        link : '/advance'
-    },
-    
-    {
-        id   : 'loan',
-        title: 'Loans',
-        type : 'basic',
-        icon : 'heroicons_outline:banknotes',
-        link : '/loan'
-    },
-    {
-        id   : 'role',
-        title: 'Roles',
-        type : 'basic',
-        icon : 'heroicons_outline:briefcase',
-        link : '/role'
-    },
-    {
-        id   : 'salary',
-        title: 'Salary',
-        type : 'basic',
-        icon : 'heroicons_outline:document-text',
-        link : '/salary-sheet'
-    },{
-        id   : 'epf',
-        title: 'EPF Report',
-        type : 'basic',
-        icon : 'heroicons_outline:banknotes',
-        link : '/epf'
-    }
-];
-
-export const futuristicNavigation: FuseNavigationItem[] = [...compactNavigation];
-export const horizontalNavigation: FuseNavigationItem[] = [...compactNavigation];
+export const defaultNavigation: FuseNavigationItem[] = financeNavigation;
+export const compactNavigation: FuseNavigationItem[] = financeNavigation;
+export const futuristicNavigation: FuseNavigationItem[] = [...financeNavigation];
+export const horizontalNavigation: FuseNavigationItem[] = [...financeNavigation];

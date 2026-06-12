@@ -13,11 +13,11 @@ export type PartialUpdateChurchStaff = Partial<IChurchStaff> & Pick<IChurchStaff
 
 // --- Define REST-safe types by converting Dayjs objects to strings ---
 type RestOf<T extends IChurchStaff | NewChurchStaff | PartialUpdateChurchStaff> = Omit<T, 'createdDate' | 'lastModifiedDate'> & {
-  
+
   createdDate?: string | null;
-  
+
   lastModifiedDate?: string | null;
-  
+
 };
 
 export type RestChurchStaff = RestOf<IChurchStaff>;
@@ -33,7 +33,7 @@ export class ChurchStaffService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `//api/church-staffs`;
+  protected resourceUrl = `/api/church-staffs`;
 
   create(payload: NewChurchStaff): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
@@ -73,32 +73,32 @@ export class ChurchStaffService {
   // --- Date Conversion Helpers ---
   protected convertDateFromClient<T extends IChurchStaff | NewChurchStaff | PartialUpdateChurchStaff>(entity: T): RestOf<T> {
     const copy: any = { ...entity };
-    
+
     if (dayjs.isDayjs(entity.createdDate)) {
       copy.createdDate = entity.createdDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.lastModifiedDate)) {
       copy.lastModifiedDate = entity.lastModifiedDate.toJSON();
     }
-    
+
     return copy;
   }
 
   protected convertDateFromServer(restEntity: RestChurchStaff): IChurchStaff {
     const entity: any = { ...restEntity };
-    
+
     if (entity.createdDate) {
-        entity.createdDate = dayjs(entity.createdDate);
+      entity.createdDate = dayjs(entity.createdDate);
     }
-    
+
     if (entity.lastModifiedDate) {
-        entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
+      entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
     }
-    
+
     return entity;
   }
-  
+
   protected convertResponseFromServer(res: HttpResponse<RestChurchStaff>): HttpResponse<IChurchStaff> {
     return res.clone({ body: res.body ? this.convertDateFromServer(res.body) : null });
   }

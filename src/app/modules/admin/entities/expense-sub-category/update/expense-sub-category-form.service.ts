@@ -15,14 +15,6 @@ export type ExpenseSubCategoryFormGroup = FormGroup<{
   
   subCategoryName: FormControl<IExpenseSubCategory['subCategoryName']>;
   
-  createdBy: FormControl<IExpenseSubCategory['createdBy']>;
-  
-  createdDate: FormControl<IExpenseSubCategory['createdDate']>;
-  
-  lastModifiedBy: FormControl<IExpenseSubCategory['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IExpenseSubCategory['lastModifiedDate']>;
-  
   
 }>;
 
@@ -41,14 +33,6 @@ export class ExpenseSubCategoryFormService {
       
       subCategoryName: new FormControl(entity.subCategoryName),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -66,3 +50,4 @@ export class ExpenseSubCategoryFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

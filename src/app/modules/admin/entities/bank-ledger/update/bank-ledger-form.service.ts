@@ -27,14 +27,6 @@ export type BankLedgerFormGroup = FormGroup<{
   
   remark: FormControl<IBankLedger['remark']>;
   
-  createdBy: FormControl<IBankLedger['createdBy']>;
-  
-  createdDate: FormControl<IBankLedger['createdDate']>;
-  
-  lastModifiedBy: FormControl<IBankLedger['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IBankLedger['lastModifiedDate']>;
-  
   
 }>;
 
@@ -65,14 +57,6 @@ export class BankLedgerFormService {
       
       remark: new FormControl(entity.remark),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -90,3 +74,4 @@ export class BankLedgerFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

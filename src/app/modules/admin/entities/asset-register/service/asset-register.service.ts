@@ -13,13 +13,13 @@ export type PartialUpdateAssetRegister = Partial<IAssetRegister> & Pick<IAssetRe
 
 // --- Define REST-safe types by converting Dayjs objects to strings ---
 type RestOf<T extends IAssetRegister | NewAssetRegister | PartialUpdateAssetRegister> = Omit<T, 'purchaseDate' | 'createdDate' | 'lastModifiedDate'> & {
-  
+
   purchaseDate?: string | null;
-  
+
   createdDate?: string | null;
-  
+
   lastModifiedDate?: string | null;
-  
+
 };
 
 export type RestAssetRegister = RestOf<IAssetRegister>;
@@ -35,7 +35,7 @@ export class AssetRegisterService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `//api/asset-registers`;
+  protected resourceUrl = `/api/asset-registers`;
 
   create(payload: NewAssetRegister): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
@@ -75,40 +75,40 @@ export class AssetRegisterService {
   // --- Date Conversion Helpers ---
   protected convertDateFromClient<T extends IAssetRegister | NewAssetRegister | PartialUpdateAssetRegister>(entity: T): RestOf<T> {
     const copy: any = { ...entity };
-    
+
     if (dayjs.isDayjs(entity.purchaseDate)) {
       copy.purchaseDate = entity.purchaseDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.createdDate)) {
       copy.createdDate = entity.createdDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.lastModifiedDate)) {
       copy.lastModifiedDate = entity.lastModifiedDate.toJSON();
     }
-    
+
     return copy;
   }
 
   protected convertDateFromServer(restEntity: RestAssetRegister): IAssetRegister {
     const entity: any = { ...restEntity };
-    
+
     if (entity.purchaseDate) {
-        entity.purchaseDate = dayjs(entity.purchaseDate);
+      entity.purchaseDate = dayjs(entity.purchaseDate);
     }
-    
+
     if (entity.createdDate) {
-        entity.createdDate = dayjs(entity.createdDate);
+      entity.createdDate = dayjs(entity.createdDate);
     }
-    
+
     if (entity.lastModifiedDate) {
-        entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
+      entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
     }
-    
+
     return entity;
   }
-  
+
   protected convertResponseFromServer(res: HttpResponse<RestAssetRegister>): HttpResponse<IAssetRegister> {
     return res.clone({ body: res.body ? this.convertDateFromServer(res.body) : null });
   }

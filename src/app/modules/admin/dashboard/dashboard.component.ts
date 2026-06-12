@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpHeaders } from '@angular/common/http';
-import dayjs from 'dayjs';
 import { forkJoin, take } from 'rxjs';
 
-import { AdvanceService } from '../entities/advance/service/advance.service';
-import { EmployeeService } from '../entities/employee/service/employee.service';
-import { LandService } from '../entities/land/service/land.service';
-import { LoanService } from '../entities/loan/service/loan.service';
+import { AccountSetService } from '../entities/account-set/service/account-set.service';
+import { BranchService } from '../entities/branch/service/branch.service';
+import { ChurchStaffService } from '../entities/church-staff/service/church-staff.service';
+import { ExpenseEntryService } from '../entities/expense-entry/service/expense-entry.service';
+import { IncomeEntryService } from '../entities/income-entry/service/income-entry.service';
+import { AssetRegisterService } from '../entities/asset-register/service/asset-register.service';
 import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
 
@@ -19,42 +20,58 @@ import { UserService } from 'app/core/user/user.service';
     templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {
-    private readonly landService = inject(LandService);
-    private readonly employeeService = inject(EmployeeService);
-    private readonly loanService = inject(LoanService);
-    private readonly advanceService = inject(AdvanceService);
+    private readonly branchService = inject(BranchService);
+    private readonly accountSetService = inject(AccountSetService);
+    private readonly incomeEntryService = inject(IncomeEntryService);
+    private readonly expenseEntryService = inject(ExpenseEntryService);
+    private readonly assetRegisterService = inject(AssetRegisterService);
+    private readonly churchStaffService = inject(ChurchStaffService);
     private readonly _userService = inject(UserService);
 
     isFinanceOnly: boolean = false;
 
     summaryCards = [
         {
-            key: 'lands',
-            label: 'Lands',
+            key: 'branches',
+            label: 'Branches',
             value: '0',
-            hint: 'Registered lands',
-            route: '/land',
+            hint: 'Active branch workspaces',
+            route: '/branch',
         },
         {
-            key: 'employees',
-            label: 'Employees',
+            key: 'accounts',
+            label: 'Chart of Accounts',
             value: '0',
-            hint: 'Active employees',
-            route: '/employee',
+            hint: 'Configured ledger accounts',
+            route: '/account-set',
         },
         {
-            key: 'loans',
-            label: 'Loans',
+            key: 'incomeEntries',
+            label: 'Income Entries',
             value: '0',
-            hint: 'Open loans',
-            route: '/loan',
+            hint: 'Recorded income transactions',
+            route: '/income-entry',
         },
         {
-            key: 'advances',
-            label: 'Advances',
+            key: 'expenseEntries',
+            label: 'Expense Entries',
             value: '0',
-            hint: 'This month',
-            route: '/advance',
+            hint: 'Recorded expense transactions',
+            route: '/expense-entry',
+        },
+        {
+            key: 'assets',
+            label: 'Assets',
+            value: '0',
+            hint: 'Registered fixed assets',
+            route: '/asset-register',
+        },
+        {
+            key: 'staff',
+            label: 'Church Staff',
+            value: '0',
+            hint: 'Active staff records',
+            route: '/church-staff',
         },
     ];
 
@@ -73,57 +90,59 @@ export class DashboardComponent implements OnInit {
     }
 
     private loadSummary(): void {
-        const monthStart = dayjs().startOf('month').format('YYYY-MM-DD');
-        const monthEnd = dayjs().endOf('month').format('YYYY-MM-DD');
-
         forkJoin({
-            lands: this.landService.query({ page: 0, size: 1 }),
-            employees: this.employeeService.query({
+            branches: this.branchService.query({ page: 0, size: 1 }),
+            accounts: this.accountSetService.query({ page: 0, size: 1 }),
+            incomeEntries: this.incomeEntryService.query({ page: 0, size: 1 }),
+            expenseEntries: this.expenseEntryService.query({ page: 0, size: 1 }),
+            assets: this.assetRegisterService.query({ page: 0, size: 1 }),
+            staff: this.churchStaffService.query({
                 page: 0,
                 size: 1,
-                'active.equals': true,
-                'isDraft.equals': false,
-                'isPrivate.equals': false,
-            }),
-            loans: this.loanService.query({
-                page: 0,
-                size: 1,
-                'active.equals': true,
-            }),
-            advances: this.advanceService.query({
-                page: 0,
-                size: 1,
-                'date.greaterThanOrEqual': monthStart,
-                'date.lessThanOrEqual': monthEnd,
+                'isActive.equals': true,
             }),
         }).subscribe({
             next: (res) => {
                 this.setCardValue(
-                    'lands',
+                    'branches',
                     this.getTotalCount(
-                        res.lands.headers,
-                        res.lands.body?.length
+                        res.branches.headers,
+                        res.branches.body?.length
                     )
                 );
                 this.setCardValue(
-                    'employees',
+                    'accounts',
                     this.getTotalCount(
-                        res.employees.headers,
-                        res.employees.body?.length
+                        res.accounts.headers,
+                        res.accounts.body?.length
                     )
                 );
                 this.setCardValue(
-                    'loans',
+                    'incomeEntries',
                     this.getTotalCount(
-                        res.loans.headers,
-                        res.loans.body?.length
+                        res.incomeEntries.headers,
+                        res.incomeEntries.body?.length
                     )
                 );
                 this.setCardValue(
-                    'advances',
+                    'expenseEntries',
                     this.getTotalCount(
-                        res.advances.headers,
-                        res.advances.body?.length
+                        res.expenseEntries.headers,
+                        res.expenseEntries.body?.length
+                    )
+                );
+                this.setCardValue(
+                    'assets',
+                    this.getTotalCount(
+                        res.assets.headers,
+                        res.assets.body?.length
+                    )
+                );
+                this.setCardValue(
+                    'staff',
+                    this.getTotalCount(
+                        res.staff.headers,
+                        res.staff.body?.length
                     )
                 );
             },
@@ -150,9 +169,7 @@ export class DashboardComponent implements OnInit {
     }
 
     get summaryCardsForDisplay() {
-        return this.isFinanceOnly
-            ? this.summaryCards.filter((card) => card.key !== 'lands')
-            : this.summaryCards;
+        return this.summaryCards;
     }
 
     private _hasFinanceOnlyAuthority(user?: User | null): boolean {

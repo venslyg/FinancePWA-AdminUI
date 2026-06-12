@@ -15,14 +15,6 @@ export type ExpenseCategoryFormGroup = FormGroup<{
   
   description: FormControl<IExpenseCategory['description']>;
   
-  createdBy: FormControl<IExpenseCategory['createdBy']>;
-  
-  createdDate: FormControl<IExpenseCategory['createdDate']>;
-  
-  lastModifiedBy: FormControl<IExpenseCategory['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IExpenseCategory['lastModifiedDate']>;
-  
   
 }>;
 
@@ -41,14 +33,6 @@ export class ExpenseCategoryFormService {
       
       description: new FormControl(entity.description),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -66,3 +50,4 @@ export class ExpenseCategoryFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

@@ -25,14 +25,6 @@ export type ChurchStaffFormGroup = FormGroup<{
   
   isActive: FormControl<IChurchStaff['isActive']>;
   
-  createdBy: FormControl<IChurchStaff['createdBy']>;
-  
-  createdDate: FormControl<IChurchStaff['createdDate']>;
-  
-  lastModifiedBy: FormControl<IChurchStaff['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IChurchStaff['lastModifiedDate']>;
-  
   
 }>;
 
@@ -61,14 +53,6 @@ export class ChurchStaffFormService {
       
       isActive: new FormControl(entity.isActive),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -86,3 +70,4 @@ export class ChurchStaffFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+

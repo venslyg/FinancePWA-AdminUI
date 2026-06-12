@@ -13,15 +13,15 @@ export type PartialUpdateLiabilityLog = Partial<ILiabilityLog> & Pick<ILiability
 
 // --- Define REST-safe types by converting Dayjs objects to strings ---
 type RestOf<T extends ILiabilityLog | NewLiabilityLog | PartialUpdateLiabilityLog> = Omit<T, 'startDate' | 'endDate' | 'createdDate' | 'lastModifiedDate'> & {
-  
+
   startDate?: string | null;
-  
+
   endDate?: string | null;
-  
+
   createdDate?: string | null;
-  
+
   lastModifiedDate?: string | null;
-  
+
 };
 
 export type RestLiabilityLog = RestOf<ILiabilityLog>;
@@ -37,7 +37,7 @@ export class LiabilityLogService {
   protected readonly http = inject(HttpClient);
 
   // FIX: Ensure the microservice name from the config is always lowercase in the URL.
-  protected resourceUrl = `//api/liability-logs`;
+  protected resourceUrl = `/api/liability-logs`;
 
   create(payload: NewLiabilityLog): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(payload);
@@ -77,48 +77,48 @@ export class LiabilityLogService {
   // --- Date Conversion Helpers ---
   protected convertDateFromClient<T extends ILiabilityLog | NewLiabilityLog | PartialUpdateLiabilityLog>(entity: T): RestOf<T> {
     const copy: any = { ...entity };
-    
+
     if (dayjs.isDayjs(entity.startDate)) {
       copy.startDate = entity.startDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.endDate)) {
       copy.endDate = entity.endDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.createdDate)) {
       copy.createdDate = entity.createdDate.toJSON();
     }
-    
+
     if (dayjs.isDayjs(entity.lastModifiedDate)) {
       copy.lastModifiedDate = entity.lastModifiedDate.toJSON();
     }
-    
+
     return copy;
   }
 
   protected convertDateFromServer(restEntity: RestLiabilityLog): ILiabilityLog {
     const entity: any = { ...restEntity };
-    
+
     if (entity.startDate) {
-        entity.startDate = dayjs(entity.startDate);
+      entity.startDate = dayjs(entity.startDate);
     }
-    
+
     if (entity.endDate) {
-        entity.endDate = dayjs(entity.endDate);
+      entity.endDate = dayjs(entity.endDate);
     }
-    
+
     if (entity.createdDate) {
-        entity.createdDate = dayjs(entity.createdDate);
+      entity.createdDate = dayjs(entity.createdDate);
     }
-    
+
     if (entity.lastModifiedDate) {
-        entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
+      entity.lastModifiedDate = dayjs(entity.lastModifiedDate);
     }
-    
+
     return entity;
   }
-  
+
   protected convertResponseFromServer(res: HttpResponse<RestLiabilityLog>): HttpResponse<ILiabilityLog> {
     return res.clone({ body: res.body ? this.convertDateFromServer(res.body) : null });
   }

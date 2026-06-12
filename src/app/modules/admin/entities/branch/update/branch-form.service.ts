@@ -19,14 +19,6 @@ export type BranchFormGroup = FormGroup<{
   
   isActive: FormControl<IBranch['isActive']>;
   
-  createdBy: FormControl<IBranch['createdBy']>;
-  
-  createdDate: FormControl<IBranch['createdDate']>;
-  
-  lastModifiedBy: FormControl<IBranch['lastModifiedBy']>;
-  
-  lastModifiedDate: FormControl<IBranch['lastModifiedDate']>;
-  
   
 }>;
 
@@ -49,14 +41,6 @@ export class BranchFormService {
       
       isActive: new FormControl(entity.isActive),
       
-      createdBy: new FormControl(entity.createdBy),
-      
-      createdDate: new FormControl(entity.createdDate),
-      
-      lastModifiedBy: new FormControl(entity.lastModifiedBy),
-      
-      lastModifiedDate: new FormControl(entity.lastModifiedDate),
-      
       
     });
     return form;
@@ -74,3 +58,4 @@ export class BranchFormService {
     form.controls.id.setValue(entity.id);
   }
 }
+
