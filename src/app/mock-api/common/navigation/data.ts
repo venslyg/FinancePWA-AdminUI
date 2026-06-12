@@ -37,28 +37,6 @@ const financeNavigation: FuseNavigationItem[] = [
                 link: '/income-entry',
             },
             {
-                id: 'expense',
-                title: 'Expense',
-                type: 'collapsable',
-                icon: 'heroicons_outline:folder',
-                children: [
-                    {
-                        id: 'expense-category',
-                        title: 'Expense Categories',
-                        type: 'basic',
-                        icon: 'heroicons_outline:folder',
-                        link: '/expense-category',
-                    },
-                    {
-                        id: 'expense-sub-category',
-                        title: 'Expense Subcategories',
-                        type: 'basic',
-                        icon: 'heroicons_outline:folder-open',
-                        link: '/expense-sub-category',
-                    },
-                ],
-            },
-            {
                 id: 'expense-entry',
                 title: 'Expense Entries',
                 type: 'basic',
@@ -96,6 +74,28 @@ const financeNavigation: FuseNavigationItem[] = [
         ],
     },
     {
+        id: 'expense',
+        title: 'Expense',
+        type: 'collapsable',
+        icon: 'heroicons_outline:folder',
+        children: [
+            {
+                id: 'expense-category',
+                title: 'Expense Categories',
+                type: 'basic',
+                icon: 'heroicons_outline:folder',
+                link: '/expense-category',
+            },
+            {
+                id: 'expense-sub-category',
+                title: 'Expense Sub categories',
+                type: 'basic',
+                icon: 'heroicons_outline:folder-open',
+                link: '/expense-sub-category',
+            },
+        ],
+    },
+    {
         id: 'assets',
         title: 'Assets',
         type: 'collapsable',
@@ -110,7 +110,7 @@ const financeNavigation: FuseNavigationItem[] = [
             },
             {
                 id: 'asset-sub-category',
-                title: 'Asset Subcategories',
+                title: 'Asset Sub categories',
                 type: 'basic',
                 icon: 'heroicons_outline:archive-box-x-mark',
                 link: '/asset-sub-category',
@@ -161,19 +161,11 @@ const financeNavigation: FuseNavigationItem[] = [
         ],
     },
     {
-        id: 'liability',
-        title: 'Liability',
-        type: 'collapsable',
-        icon: 'heroicons_outline:document-duplicate',
-        children: [
-            {
-                id: 'budget-plan',
-                title: 'Budget Plans',
-                type: 'basic',
-                icon: 'heroicons_outline:scale',
-                link: '/budget-plan',
-            },
-        ],
+        id: 'budget-plan',
+        title: 'Budget Plans',
+        type: 'basic',
+        icon: 'heroicons_outline:scale',
+        link: '/budget-plan',
     },
     {
         id: 'people',
