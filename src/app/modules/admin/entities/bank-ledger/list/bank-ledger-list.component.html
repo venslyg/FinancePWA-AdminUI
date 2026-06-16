@@ -44,7 +44,7 @@
           <mat-progress-spinner [diameter]="40" [mode]="'indeterminate'"></mat-progress-spinner>
         </div>
 
-        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="loadData()" *ngIf="!isLoading" class="min-w-full text-slate-900">
+        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="loadData()" [hidden]="isLoading" class="min-w-full text-slate-900">
 
           <!-- Dynamically generate columns for entity fields -->
           <ng-container matColumnDef="id">
