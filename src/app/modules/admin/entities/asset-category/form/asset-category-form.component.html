@@ -12,7 +12,7 @@
       
     <mat-form-field class="w-full">
       <mat-label>Asset Category Code</mat-label>
-      <input matInput formControlName="assetCategoryCode" >
+      <input matInput formControlName="assetCategoryCode" readonly>
     </mat-form-field>
       
     
@@ -27,7 +27,10 @@
     <mat-form-field class="w-full">
       <mat-label>Description</mat-label>
       <input matInput formControlName="description" >
-    </mat-form-field></div>
+    </mat-form-field>
+    <div class="flex items-center pt-2">
+      <mat-checkbox formControlName="isActive">Active Status</mat-checkbox>
+    </div></div>
 
   <div *ngIf="errorMessage" class="px-4 py-2 mt-2 rounded bg-warn-100 text-warn-900">
     {{ errorMessage }}

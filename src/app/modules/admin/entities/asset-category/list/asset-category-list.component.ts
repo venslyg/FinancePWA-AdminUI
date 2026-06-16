@@ -22,15 +22,19 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 
-// Application Imports
+// // Application Imports
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { IAssetCategory } from '../asset-category.model';
 import { AssetCategoryService } from '../service/asset-category.service';
 import { AssetCategoryFormComponent } from '../form/asset-category-form.component';
+import { AssetSubCategoryFormComponent } from '../../asset-sub-category/form/asset-sub-category-form.component';
+import { AssetSubCategoryService } from '../../asset-sub-category/service/asset-sub-category.service';
+import { IAssetSubCategory } from '../../asset-sub-category/asset-sub-category.model';
 
-
-
-
-
+interface IAssetCategoryExtended extends IAssetCategory {
+  subCategories?: IAssetSubCategory[];
+  expanded?: boolean;
+}
 
 type ParentDialogData = {
   parentFilters?: Record<string, string | number>;
@@ -106,12 +110,14 @@ const FILTER_OPERATOR_LIBRARY: Record<FilterValueType, FilterFieldOperator[]> = 
     MatDatepickerModule,
     MatNativeDateModule,
     AssetCategoryFormComponent,
+    MatSlideToggleModule,
   ],
   templateUrl: './asset-category-list.component.html',
 })
 export class AssetCategoryListComponent implements AfterViewInit, OnInit {
   // --- Injected Services ---
   private readonly assetCategoryService = inject(AssetCategoryService);
+  private readonly assetSubCategoryService = inject(AssetSubCategoryService);
   private readonly fuseConfirmationService = inject(FuseConfirmationService);
   private readonly route = inject(ActivatedRoute);
   private readonly dialog = inject(MatDialog);
@@ -127,6 +133,8 @@ export class AssetCategoryListComponent implements AfterViewInit, OnInit {
   private baseParentFilters: Record<string, string | number> = {};
   private activeFilters: Record<string, string> = {};
 
+  searchQuery: string = '';
+
   selectedAssetCategory: IAssetCategory | null = null;
   drawerMode: 'new' | 'edit' = 'new';
   filterFields: FilterField[] = [];
@@ -140,7 +148,7 @@ export class AssetCategoryListComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   displayedColumns: string[] = ['id', 'assetCategoryCode', 'assetCategoryName', 'description',  'actions'];
-  dataSource = new MatTableDataSource<IAssetCategory>();
+  dataSource = new MatTableDataSource<IAssetCategoryExtended>();
 
   ngOnInit(): void {
     if (this.dialogData?.parentFilters) {
@@ -149,7 +157,8 @@ export class AssetCategoryListComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
-    const triggers$ = merge(this.sort.sortChange, this.paginator.page, this.refreshTrigger).pipe(startWith({}));
+    const sortChange$ = (this.sort ? this.sort.sortChange : of(null)) as any;
+    const triggers$ = merge(sortChange$, this.paginator.page, this.refreshTrigger).pipe(startWith({}));
 
     if (this.dialogData?.parentFilters) {
       triggers$.subscribe(() => this.loadData());
@@ -178,19 +187,75 @@ export class AssetCategoryListComponent implements AfterViewInit, OnInit {
     }
 
     this.isLoading = true;
-    const req = {
-      page: this.paginator.pageIndex,
-      size: this.paginator.pageSize,
-      sort: this.getSortParameters(),
-      ...this.baseParentFilters,
-      ...this.activeFilters,
-    };
 
-    this.assetCategoryService.query(req).pipe(
-      tap(res => {
-        this.isLoading = false;
-        this.totalItems = Number(res.headers.get('X-Total-Count') ?? 0);
-        this.dataSource.data = res.body ?? [];
+    // Fetch all categories (size 1000) to allow client-side filtering and hierarchy matching
+    this.assetCategoryService.query({ size: 1000, ...this.baseParentFilters, ...this.activeFilters }).pipe(
+      switchMap(res => {
+        const categories: IAssetCategoryExtended[] = res.body ?? [];
+        
+        return this.assetSubCategoryService.query({ size: 1000 }).pipe(
+          tap(subRes => {
+            this.isLoading = false;
+            const subCategories = subRes.body ?? [];
+            
+            // Map sub-categories to their parent categories
+            categories.forEach(cat => {
+              cat.subCategories = subCategories.filter(sub => sub.assetCategoryCode === cat.assetCategoryCode);
+            });
+
+            // Apply search query filtering (both category and sub-category)
+            let filtered = categories;
+            if (this.searchQuery) {
+              const q = this.searchQuery.toLowerCase().trim();
+              filtered = categories.filter(cat => {
+                const catMatches = !!(cat.assetCategoryName?.toLowerCase().includes(q) || cat.assetCategoryCode?.toLowerCase().includes(q));
+                const subMatches = cat.subCategories?.some(sub => 
+                  sub.assetSubCategoryName?.toLowerCase().includes(q) || sub.assetSubCategoryCode?.toLowerCase().includes(q)
+                ) ?? false;
+                return catMatches || subMatches;
+              });
+
+              // Also, if a category is kept because of a sub-category match, we should auto-expand it to show the match!
+              filtered.forEach(cat => {
+                const subMatches = cat.subCategories?.some(sub => 
+                  sub.assetSubCategoryName?.toLowerCase().includes(q) || sub.assetSubCategoryCode?.toLowerCase().includes(q)
+                ) ?? false;
+                if (subMatches) {
+                  cat.expanded = true;
+                }
+              });
+            }
+
+            // Restore previous expansion states if any
+            const expandedMap = new Map<number, boolean>();
+            this.dataSource.data.forEach(item => {
+              if (item.id !== undefined && item.expanded !== undefined) {
+                expandedMap.set(item.id, item.expanded);
+              }
+            });
+            filtered.forEach(cat => {
+              if (cat.id !== undefined) {
+                const restoredExpanded = expandedMap.get(cat.id);
+                if (restoredExpanded !== undefined) {
+                  cat.expanded = restoredExpanded;
+                } else if (cat.expanded === undefined) {
+                  cat.expanded = false;
+                }
+              }
+            });
+
+            // Paginate the filtered list on client-side
+            this.totalItems = filtered.length;
+            const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
+            const endIndex = startIndex + this.paginator.pageSize;
+            this.dataSource.data = filtered.slice(startIndex, endIndex);
+          }),
+          catchError(() => {
+            this.isLoading = false;
+            this.dataSource.data = [];
+            return of(null);
+          })
+        );
       }),
       catchError(() => {
         this.isLoading = false;
@@ -204,6 +269,38 @@ export class AssetCategoryListComponent implements AfterViewInit, OnInit {
       return ['id,asc'];
     }
     return [`${this.sort.active},${this.sort.direction}`];
+  }
+
+  openSubFormDrawer(sub?: IAssetSubCategory, parentCategoryCode?: string): void {
+    const dialogRef = this.dialog.open(AssetSubCategoryFormComponent, {
+      width: '450px',
+      data: {
+        entity: sub,
+        defaults: parentCategoryCode ? { assetCategoryCode: parentCategoryCode } : {}
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadData();
+      }
+    });
+  }
+
+  deleteSub(id: number): void {
+    const confirmation = this.fuseConfirmationService.open({
+      title: 'Delete AssetSubCategory',
+      message: 'Are you sure you want to delete this sub-category? This action cannot be undone.',
+      actions: { confirm: { label: 'Delete' } },
+    });
+
+    confirmation.afterClosed().subscribe(result => {
+      if (result === 'confirmed') {
+        this.assetSubCategoryService.delete(id).subscribe(() => {
+          this.loadData();
+        });
+      }
+    });
   }
 
   openFormDrawer(id?: number): void {
@@ -364,7 +461,35 @@ export class AssetCategoryListComponent implements AfterViewInit, OnInit {
     return (this as any)[field.enumOptionsKey] ?? [];
   }
 
-  
+  onSearch(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.searchQuery = value;
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+    this.loadData();
+  }
+
+  toggleActive(element: IAssetCategoryExtended): void {
+    const updated = { ...element, isActive: !element.isActive };
+    const { subCategories, expanded, ...payload } = updated;
+    this.assetCategoryService.update(payload).subscribe({
+      next: () => {
+        element.isActive = !element.isActive;
+      },
+      error: () => {}
+    });
+  }
+
+  toggleSubActive(sub: IAssetSubCategory): void {
+    const updated = { ...sub, isActive: !sub.isActive };
+    this.assetSubCategoryService.update(updated).subscribe({
+      next: () => {
+        sub.isActive = !sub.isActive;
+      },
+      error: () => {}
+    });
+  }
 
   private buildFiltersForm(): FormGroup {
     const groupConfig = this.filterFields.reduce((acc, field) => {

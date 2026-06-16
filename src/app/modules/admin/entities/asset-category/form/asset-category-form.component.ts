@@ -133,6 +133,14 @@ export class AssetCategoryFormComponent implements OnInit, OnChanges {
       this.formService.resetForm(this.form, entity);
     } else {
       this.formService.resetForm(this.form, { id: null, ...defaults } as Partial<NewAssetCategory>);
+      if (!this.form.value.assetCategoryCode) {
+        this.assetCategoryService.query({ size: 1000 }).subscribe(res => {
+          const count = res.body?.length || 0;
+          const nextNum = String(count + 1).padStart(3, '0');
+          const generatedCode = `ASCAT-${nextNum}`;
+          this.form.patchValue({ assetCategoryCode: generatedCode });
+        });
+      }
     }
   }
 

@@ -17,9 +17,8 @@ import { finalize } from 'rxjs/operators';
 import { IAssetSubCategory, NewAssetSubCategory } from '../asset-sub-category.model';
 import { AssetSubCategoryService } from '../service/asset-sub-category.service';
 import { AssetSubCategoryFormGroup, AssetSubCategoryFormService } from '../update/asset-sub-category-form.service';
-
-
-
+import { AssetCategoryService } from '../../asset-category/service/asset-category.service';
+import { IAssetCategory } from '../../asset-category/asset-category.model';
 
 
 
@@ -50,9 +49,13 @@ type AssetSubCategoryFormDialogData = {
 })
 export class AssetSubCategoryFormComponent implements OnInit, OnChanges {
   private readonly assetSubCategoryService = inject(AssetSubCategoryService);
+  private readonly assetCategoryService = inject(AssetCategoryService);
   private readonly formService = inject(AssetSubCategoryFormService);
   private readonly dialogRef = inject(MatDialogRef<AssetSubCategoryFormComponent>, { optional: true });
   private readonly dialogData = inject(MAT_DIALOG_DATA, { optional: true }) as AssetSubCategoryFormDialogData | null;
+
+  categoryName: string = '';
+  parentCategory: IAssetCategory | null = null;
 
   @Input() entity: IAssetSubCategory | null = null;
   @Input() heading?: string;
@@ -93,6 +96,7 @@ export class AssetSubCategoryFormComponent implements OnInit, OnChanges {
     this.errorMessage = null;
     this.isSaving = true;
     const payload = this.formService.getAssetSubCategory(this.form);
+    payload.category = this.parentCategory;
     const isUpdate = payload.id !== null;
     const request$ = isUpdate
       ? this.assetSubCategoryService.update(payload as IAssetSubCategory)
@@ -133,6 +137,24 @@ export class AssetSubCategoryFormComponent implements OnInit, OnChanges {
       this.formService.resetForm(this.form, entity);
     } else {
       this.formService.resetForm(this.form, { id: null, ...defaults } as Partial<NewAssetSubCategory>);
+      if (!this.form.value.assetSubCategoryCode) {
+        this.assetSubCategoryService.query({ size: 1000 }).subscribe(res => {
+          const count = res.body?.length || 0;
+          const nextNum = String(count + 1).padStart(3, '0');
+          const generatedCode = `ASSUBCAT-${nextNum}`;
+          this.form.patchValue({ assetSubCategoryCode: generatedCode });
+        });
+      }
+    }
+
+    const catCode = entity?.assetCategoryCode || defaults?.assetCategoryCode;
+    if (catCode) {
+      this.assetCategoryService.query({ 'assetCategoryCode.equals': catCode }).subscribe(res => {
+        if (res.body && res.body.length > 0) {
+          this.categoryName = String(res.body[0].assetCategoryName ?? '');
+          this.parentCategory = res.body[0];
+        }
+      });
     }
   }
 

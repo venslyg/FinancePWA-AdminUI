@@ -26,8 +26,7 @@ export interface IAssetCategory {
   
   
   lastModifiedDate?: dayjs.Dayjs | null;
-  
-  
+  isActive?: boolean | null;
 }
 
 export type NewAssetCategory = Omit<IAssetCategory, 'id'> & { id: null };

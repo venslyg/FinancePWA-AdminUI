@@ -1,7 +1,5 @@
 import dayjs from 'dayjs/esm';
-
-
-
+import { IAssetCategory } from '../asset-category/asset-category.model';
 
 export interface IAssetSubCategory {
   id?: number;
@@ -27,7 +25,8 @@ export interface IAssetSubCategory {
   
   lastModifiedDate?: dayjs.Dayjs | null;
   
-  
+  isActive?: boolean | null;
+  category?: IAssetCategory | null;
 }
 
 export type NewAssetSubCategory = Omit<IAssetSubCategory, 'id'> & { id: null };

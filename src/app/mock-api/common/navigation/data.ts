@@ -102,13 +102,6 @@ const financeNavigation: FuseNavigationItem[] = [
                 link: '/asset-category',
             },
             {
-                id: 'asset-sub-category',
-                title: 'Asset Sub categories',
-                type: 'basic',
-                icon: 'heroicons_outline:archive-box-x-mark',
-                link: '/asset-sub-category',
-            },
-            {
                 id: 'asset-register',
                 title: 'Asset Register',
                 type: 'basic',

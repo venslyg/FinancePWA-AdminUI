@@ -14,6 +14,7 @@ export type AssetCategoryFormGroup = FormGroup<{
   assetCategoryName: FormControl<IAssetCategory['assetCategoryName']>;
   
   description: FormControl<IAssetCategory['description']>;
+  isActive: FormControl<IAssetCategory['isActive']>;
   
   
 }>;
@@ -32,6 +33,7 @@ export class AssetCategoryFormService {
       assetCategoryName: new FormControl(entity.assetCategoryName),
       
       description: new FormControl(entity.description),
+      isActive: new FormControl(entity.isActive ?? true),
       
       
     });
@@ -45,7 +47,7 @@ export class AssetCategoryFormService {
   resetForm(form: AssetCategoryFormGroup, entity: AssetCategoryFormGroupInput): void {
     form.reset({
       ...entity,
-      
+      isActive: entity.isActive ?? true,
     } as any);
     form.controls.id.setValue(entity.id);
   }

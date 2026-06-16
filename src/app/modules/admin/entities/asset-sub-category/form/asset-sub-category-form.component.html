@@ -11,23 +11,26 @@
     
       
     <mat-form-field class="w-full">
-      <mat-label>AssetCategoryCode</mat-label>
-      <input matInput formControlName="assetCategoryCode" >
+      <mat-label>Category Name</mat-label>
+      <input matInput [value]="categoryName" readonly>
     </mat-form-field>
       
     
       
     <mat-form-field class="w-full">
-      <mat-label>AssetSubCategoryCode</mat-label>
-      <input matInput formControlName="assetSubCategoryCode" >
+      <mat-label>Asset Sub Category Code</mat-label>
+      <input matInput formControlName="assetSubCategoryCode" readonly>
     </mat-form-field>
       
     
       
     <mat-form-field class="w-full">
-      <mat-label>AssetSubCategoryName</mat-label>
+      <mat-label>Asset Sub Category Name</mat-label>
       <input matInput formControlName="assetSubCategoryName" >
-    </mat-form-field></div>
+    </mat-form-field>
+    <div class="flex items-center pt-2">
+      <mat-checkbox formControlName="isActive">Active Status</mat-checkbox>
+    </div></div>
 
   <div *ngIf="errorMessage" class="mt-2 rounded bg-warn-100 px-4 py-2 text-warn-900">
     {{ errorMessage }}
