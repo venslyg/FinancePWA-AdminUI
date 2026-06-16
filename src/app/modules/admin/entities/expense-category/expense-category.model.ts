@@ -27,7 +27,7 @@ export interface IExpenseCategory {
   
   lastModifiedDate?: dayjs.Dayjs | null;
   
-  
+  isActive?: boolean | null;
 }
 
 export type NewExpenseCategory = Omit<IExpenseCategory, 'id'> & { id: null };

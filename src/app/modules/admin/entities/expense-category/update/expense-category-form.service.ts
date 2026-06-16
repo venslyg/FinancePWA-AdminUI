@@ -8,14 +8,10 @@ type ExpenseCategoryFormGroupInput = IExpenseCategory | Partial<NewExpenseCatego
 type ExpenseCategoryFormRawValue = IExpenseCategory;
 export type ExpenseCategoryFormGroup = FormGroup<{
   id: FormControl<IExpenseCategory['id'] | NewExpenseCategory['id']>;
-  
   categoryCode: FormControl<IExpenseCategory['categoryCode']>;
-  
   categoryName: FormControl<IExpenseCategory['categoryName']>;
-  
   description: FormControl<IExpenseCategory['description']>;
-  
-  
+  isActive: FormControl<IExpenseCategory['isActive']>;
 }>;
 
 @Injectable({ providedIn: 'root' })
@@ -26,14 +22,10 @@ export class ExpenseCategoryFormService {
         { value: entity.id, disabled: true },
         { nonNullable: true, validators: [Validators.required] }
       ),
-      
       categoryCode: new FormControl(entity.categoryCode),
-      
       categoryName: new FormControl(entity.categoryName),
-      
       description: new FormControl(entity.description),
-      
-      
+      isActive: new FormControl(entity.isActive ?? true),
     });
     return form;
   }

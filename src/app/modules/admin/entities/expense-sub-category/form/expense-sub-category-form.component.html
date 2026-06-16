@@ -27,7 +27,11 @@
     <mat-form-field class="w-full">
       <mat-label>Sub Category Name</mat-label>
       <input matInput formControlName="subCategoryName" >
-    </mat-form-field></div>
+    </mat-form-field>
+    <div class="flex items-center pt-2">
+      <mat-checkbox formControlName="isActive">Active Status</mat-checkbox>
+    </div>
+  </div>
 
   <div *ngIf="errorMessage" class="px-4 py-2 mt-2 rounded bg-warn-100 text-warn-900">
     {{ errorMessage }}

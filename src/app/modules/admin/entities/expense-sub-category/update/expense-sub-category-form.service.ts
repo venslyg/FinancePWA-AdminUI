@@ -8,14 +8,10 @@ type ExpenseSubCategoryFormGroupInput = IExpenseSubCategory | Partial<NewExpense
 type ExpenseSubCategoryFormRawValue = IExpenseSubCategory;
 export type ExpenseSubCategoryFormGroup = FormGroup<{
   id: FormControl<IExpenseSubCategory['id'] | NewExpenseSubCategory['id']>;
-  
   categoryCode: FormControl<IExpenseSubCategory['categoryCode']>;
-  
   subCategoryCode: FormControl<IExpenseSubCategory['subCategoryCode']>;
-  
   subCategoryName: FormControl<IExpenseSubCategory['subCategoryName']>;
-  
-  
+  isActive: FormControl<IExpenseSubCategory['isActive']>;
 }>;
 
 @Injectable({ providedIn: 'root' })
@@ -26,14 +22,10 @@ export class ExpenseSubCategoryFormService {
         { value: entity.id, disabled: true },
         { nonNullable: true, validators: [Validators.required] }
       ),
-      
       categoryCode: new FormControl(entity.categoryCode),
-      
       subCategoryCode: new FormControl(entity.subCategoryCode),
-      
       subCategoryName: new FormControl(entity.subCategoryName),
-      
-      
+      isActive: new FormControl(entity.isActive ?? true),
     });
     return form;
   }

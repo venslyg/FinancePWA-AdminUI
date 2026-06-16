@@ -21,6 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 // // Application Imports
 import { IExpenseCategory } from '../expense-category.model';
@@ -109,6 +110,7 @@ const FILTER_OPERATOR_LIBRARY: Record<FilterValueType, FilterFieldOperator[]> = 
     MatDatepickerModule,
     MatNativeDateModule,
     ExpenseCategoryFormComponent,
+    MatSlideToggleModule,
   ],
   templateUrl: './expense-category-list.component.html',
 })
@@ -130,6 +132,8 @@ export class ExpenseCategoryListComponent implements AfterViewInit, OnInit {
   private readonly refreshTrigger = new Subject<void>();
   private baseParentFilters: Record<string, string | number> = {};
   private activeFilters: Record<string, string> = {};
+
+  searchQuery: string = '';
 
   selectedExpenseCategory: IExpenseCategory | null = null;
   drawerMode: 'new' | 'edit' = 'new';
@@ -183,13 +187,22 @@ export class ExpenseCategoryListComponent implements AfterViewInit, OnInit {
     }
 
     this.isLoading = true;
-    const req = {
+    const req: any = {
       page: this.paginator.pageIndex,
       size: this.paginator.pageSize,
       sort: this.getSortParameters(),
       ...this.baseParentFilters,
       ...this.activeFilters,
     };
+
+    if (this.searchQuery) {
+      const q = this.searchQuery.trim();
+      if (q.toUpperCase().startsWith('EXCAT-') || q.toLowerCase().startsWith('cat')) {
+        req['categoryCode.contains'] = q;
+      } else {
+        req['categoryName.contains'] = q;
+      }
+    }
 
     const expandedMap = new Map<number, boolean>();
     this.dataSource.data.forEach(item => {
@@ -437,8 +450,35 @@ export class ExpenseCategoryListComponent implements AfterViewInit, OnInit {
     return (this as any)[field.enumOptionsKey] ?? [];
   }
 
-  
+  onSearch(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.searchQuery = value;
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+    this.loadData();
+  }
 
+  toggleActive(element: IExpenseCategoryExtended): void {
+    const updated = { ...element, isActive: !element.isActive };
+    const { subCategories, expanded, ...payload } = updated;
+    this.expenseCategoryService.update(payload).subscribe({
+      next: () => {
+        element.isActive = !element.isActive;
+      },
+      error: () => {}
+    });
+  }
+
+  toggleSubActive(sub: IExpenseSubCategory): void {
+    const updated = { ...sub, isActive: !sub.isActive };
+    this.expenseSubCategoryService.update(updated).subscribe({
+      next: () => {
+        sub.isActive = !sub.isActive;
+      },
+      error: () => {}
+    });
+  }
   private buildFiltersForm(): FormGroup {
     const groupConfig = this.filterFields.reduce((acc, field) => {
       acc[field.key] = this.fb.group({

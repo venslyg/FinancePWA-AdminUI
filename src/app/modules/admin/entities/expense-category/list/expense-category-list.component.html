@@ -27,10 +27,10 @@
         </div>
         <!-- Actions -->
         <div class="flex items-center gap-3 mt-6 shrink-0 sm:ml-4 sm:mt-0">
-          <button mat-stroked-button type="button" (click)="openFilterDrawer()">
-            <mat-icon [svgIcon]="'heroicons_outline:funnel'"></mat-icon>
-            <span class="ml-2">Filters</span>
-          </button>
+          <mat-form-field class="fuse-mat-no-subscript w-80 mr-2" [appearance]="'outline'">
+            <mat-icon matPrefix [svgIcon]="'heroicons_outline:magnifying-glass'"></mat-icon>
+            <input matInput placeholder="Search by name or code" (input)="onSearch($event)">
+          </mat-form-field>
           <button mat-flat-button color="primary" type="button" (click)="openFormDrawer()">
             <mat-icon [svgIcon]="'heroicons_mini:plus'"></mat-icon>
             <span class="ml-2">New Expense Category</span>
@@ -51,6 +51,7 @@
               <th scope="col" class="px-6 py-3 text-left">Category Name</th>
               <th scope="col" class="px-6 py-3 text-left">Category Code</th>
               <th scope="col" class="px-6 py-3 text-left">Description</th>
+              <th scope="col" class="px-6 py-3 text-left">Status</th>
               <th scope="col" class="px-6 py-3 text-right">Actions</th>
             </tr>
           </thead>
@@ -66,6 +67,9 @@
                 <td class="px-6 py-4 whitespace-nowrap font-semibold text-slate-800">{{ element.categoryName }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-slate-500 font-mono text-sm">{{ element.categoryCode }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-slate-500 text-sm">{{ element.description }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-left text-sm">
+                  <mat-slide-toggle [checked]="element.isActive" (change)="toggleActive(element)"></mat-slide-toggle>
+                </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div class="flex items-center justify-end gap-1">
                     <!-- Add Sub-category -->
@@ -94,6 +98,9 @@
                   </td>
                   <td class="px-6 py-3 whitespace-nowrap text-slate-400 font-mono text-xs">{{ sub.subCategoryCode }}</td>
                   <td class="px-6 py-3 whitespace-nowrap text-slate-400 text-xs">-</td>
+                  <td class="px-6 py-3 whitespace-nowrap text-left text-sm">
+                    <mat-slide-toggle [checked]="sub.isActive" (change)="toggleSubActive(sub)"></mat-slide-toggle>
+                  </td>
                   <td class="px-6 py-3 whitespace-nowrap text-right text-sm font-medium">
                     <div class="flex items-center justify-end gap-1">
                       <!-- Edit Sub-category -->
@@ -109,7 +116,7 @@
                 </tr>
                 <tr *ngIf="!element.subCategories?.length" class="bg-slate-50/20">
                   <td></td>
-                  <td colspan="4" class="px-6 py-3 text-xs text-slate-400 italic">
+                  <td colspan="5" class="px-6 py-3 text-xs text-slate-400 italic">
                     No sub-categories found. Click the + icon to add one.
                   </td>
                 </tr>
@@ -117,7 +124,7 @@
             </ng-container>
 
             <tr *ngIf="!dataSource.data.length">
-              <td colspan="5" class="px-6 py-12 text-center text-slate-500">
+              <td colspan="6" class="px-6 py-12 text-center text-slate-500">
                 No data found.
               </td>
             </tr>
