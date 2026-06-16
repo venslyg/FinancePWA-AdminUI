@@ -22,15 +22,18 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 
-// Application Imports
+// // Application Imports
 import { IExpenseCategory } from '../expense-category.model';
 import { ExpenseCategoryService } from '../service/expense-category.service';
 import { ExpenseCategoryFormComponent } from '../form/expense-category-form.component';
+import { ExpenseSubCategoryFormComponent } from '../../expense-sub-category/form/expense-sub-category-form.component';
+import { ExpenseSubCategoryService } from '../../expense-sub-category/service/expense-sub-category.service';
+import { IExpenseSubCategory } from '../../expense-sub-category/expense-sub-category.model';
 
-
-
-
-
+interface IExpenseCategoryExtended extends IExpenseCategory {
+  subCategories?: IExpenseSubCategory[];
+  expanded?: boolean;
+}
 
 type ParentDialogData = {
   parentFilters?: Record<string, string | number>;
@@ -106,12 +109,14 @@ const FILTER_OPERATOR_LIBRARY: Record<FilterValueType, FilterFieldOperator[]> = 
     MatDatepickerModule,
     MatNativeDateModule,
     ExpenseCategoryFormComponent,
+    ExpenseSubCategoryFormComponent,
   ],
   templateUrl: './expense-category-list.component.html',
 })
 export class ExpenseCategoryListComponent implements AfterViewInit, OnInit {
   // --- Injected Services ---
   private readonly expenseCategoryService = inject(ExpenseCategoryService);
+  private readonly expenseSubCategoryService = inject(ExpenseSubCategoryService);
   private readonly fuseConfirmationService = inject(FuseConfirmationService);
   private readonly route = inject(ActivatedRoute);
   private readonly dialog = inject(MatDialog);
@@ -140,7 +145,7 @@ export class ExpenseCategoryListComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   displayedColumns: string[] = ['id', 'categoryCode', 'categoryName', 'description',  'actions'];
-  dataSource = new MatTableDataSource<IExpenseCategory>();
+  dataSource = new MatTableDataSource<IExpenseCategoryExtended>();
 
   ngOnInit(): void {
     if (this.dialogData?.parentFilters) {
@@ -149,7 +154,8 @@ export class ExpenseCategoryListComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
-    const triggers$ = merge(this.sort.sortChange, this.paginator.page, this.refreshTrigger).pipe(startWith({}));
+    const sortChange$ = (this.sort ? this.sort.sortChange : of(null)) as any;
+    const triggers$ = merge(sortChange$, this.paginator.page, this.refreshTrigger).pipe(startWith({}));
 
     if (this.dialogData?.parentFilters) {
       triggers$.subscribe(() => this.loadData());
@@ -186,11 +192,47 @@ export class ExpenseCategoryListComponent implements AfterViewInit, OnInit {
       ...this.activeFilters,
     };
 
+    const expandedMap = new Map<number, boolean>();
+    this.dataSource.data.forEach(item => {
+      if (item.id !== undefined && item.expanded !== undefined) {
+        expandedMap.set(item.id, item.expanded);
+      }
+    });
+
     this.expenseCategoryService.query(req).pipe(
-      tap(res => {
-        this.isLoading = false;
+      switchMap(res => {
+        const categories: IExpenseCategoryExtended[] = res.body ?? [];
+        categories.forEach(cat => {
+          if (cat.id !== undefined) {
+            cat.expanded = expandedMap.get(cat.id) ?? false;
+          } else {
+            cat.expanded = false;
+          }
+        });
+        
         this.totalItems = Number(res.headers.get('X-Total-Count') ?? 0);
-        this.dataSource.data = res.body ?? [];
+        
+        if (categories.length === 0) {
+          this.isLoading = false;
+          this.dataSource.data = [];
+          return of(null);
+        }
+
+        return this.expenseSubCategoryService.query({ size: 1000 }).pipe(
+          tap(subRes => {
+            this.isLoading = false;
+            const subCategories = subRes.body ?? [];
+            categories.forEach(cat => {
+              cat.subCategories = subCategories.filter(sub => sub.categoryCode === cat.categoryCode);
+            });
+            this.dataSource.data = categories;
+          }),
+          catchError(() => {
+            this.isLoading = false;
+            this.dataSource.data = categories;
+            return of(null);
+          })
+        );
       }),
       catchError(() => {
         this.isLoading = false;
@@ -204,6 +246,38 @@ export class ExpenseCategoryListComponent implements AfterViewInit, OnInit {
       return ['id,asc'];
     }
     return [`${this.sort.active},${this.sort.direction}`];
+  }
+
+  openSubFormDrawer(sub?: IExpenseSubCategory, parentCategoryCode?: string): void {
+    const dialogRef = this.dialog.open(ExpenseSubCategoryFormComponent, {
+      width: '450px',
+      data: {
+        entity: sub,
+        defaults: parentCategoryCode ? { categoryCode: parentCategoryCode } : {}
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadData();
+      }
+    });
+  }
+
+  deleteSub(id: number): void {
+    const confirmation = this.fuseConfirmationService.open({
+      title: 'Delete ExpenseSubCategory',
+      message: 'Are you sure you want to delete this sub-category? This action cannot be undone.',
+      actions: { confirm: { label: 'Delete' } },
+    });
+
+    confirmation.afterClosed().subscribe(result => {
+      if (result === 'confirmed') {
+        this.expenseSubCategoryService.delete(id).subscribe(() => {
+          this.loadData();
+        });
+      }
+    });
   }
 
   openFormDrawer(id?: number): void {

@@ -86,13 +86,6 @@ const financeNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:folder',
                 link: '/expense-category',
             },
-            {
-                id: 'expense-sub-category',
-                title: 'Expense Sub categories',
-                type: 'basic',
-                icon: 'heroicons_outline:folder-open',
-                link: '/expense-sub-category',
-            },
         ],
     },
     {

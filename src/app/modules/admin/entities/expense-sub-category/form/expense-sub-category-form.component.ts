@@ -133,6 +133,14 @@ export class ExpenseSubCategoryFormComponent implements OnInit, OnChanges {
       this.formService.resetForm(this.form, entity);
     } else {
       this.formService.resetForm(this.form, { id: null, ...defaults } as Partial<NewExpenseSubCategory>);
+      if (!this.form.value.subCategoryCode) {
+        this.expenseSubCategoryService.query({ size: 1000 }).subscribe(res => {
+          const count = res.body?.length || 0;
+          const nextNum = String(count + 1).padStart(3, '0');
+          const generatedCode = `EXSUBCAT-${nextNum}`;
+          this.form.patchValue({ subCategoryCode: generatedCode });
+        });
+      }
     }
   }
 

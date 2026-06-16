@@ -16,7 +16,6 @@ export class NavigationService {
         'account-set',
         'income-entry',
         'expense-category',
-        'expense-sub-category',
         'expense-entry',
         'bank-ledger',
         'petty-cash-ledger',

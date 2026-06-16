@@ -44,58 +44,84 @@
           <mat-progress-spinner [diameter]="40" [mode]="'indeterminate'"></mat-progress-spinner>
         </div>
 
-        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="loadData()" [hidden]="isLoading" class="min-w-full text-slate-900">
+        <table [hidden]="isLoading" class="min-w-full divide-y divide-slate-200 text-slate-900">
+          <thead class="bg-slate-50 text-slate-500 text-xs font-semibold uppercase tracking-wider">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left w-10"></th>
+              <th scope="col" class="px-6 py-3 text-left">Category Name</th>
+              <th scope="col" class="px-6 py-3 text-left">Category Code</th>
+              <th scope="col" class="px-6 py-3 text-left">Description</th>
+              <th scope="col" class="px-6 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-slate-100">
+            <ng-container *ngFor="let element of dataSource.data">
+              <!-- Category Row -->
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap text-left w-10">
+                  <button mat-icon-button type="button" (click)="element.expanded = !element.expanded">
+                    <mat-icon [svgIcon]="element.expanded ? 'heroicons_mini:chevron-down' : 'heroicons_mini:chevron-right'"></mat-icon>
+                  </button>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap font-semibold text-slate-800">{{ element.categoryName }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-slate-500 font-mono text-sm">{{ element.categoryCode }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-slate-500 text-sm">{{ element.description }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex items-center justify-end gap-1">
+                    <!-- Add Sub-category -->
+                    <button mat-icon-button (click)="openSubFormDrawer(undefined, element.categoryCode)" matTooltip="Add Sub Category">
+                      <mat-icon [svgIcon]="'heroicons_mini:plus'"></mat-icon>
+                    </button>
+                    <!-- Edit Category -->
+                    <button mat-icon-button (click)="openFormDrawer(element.id)" matTooltip="Edit Category">
+                      <mat-icon [svgIcon]="'heroicons_outline:pencil-square'"></mat-icon>
+                    </button>
+                    <!-- Delete Category -->
+                    <button mat-icon-button (click)="delete(element.id)" matTooltip="Delete Category">
+                      <mat-icon class="text-warn" [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                    </button>
+                  </div>
+                </td>
+              </tr>
 
-          <!-- Dynamically generate columns for entity fields -->
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-          </ng-container>
-          
-          <ng-container matColumnDef="categoryCode">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Category Code</th>
-            
-            <td mat-cell *matCellDef="let element">{{ element.categoryCode }}</td>
-            
-          </ng-container>
-          
-          <ng-container matColumnDef="categoryName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Category Name</th>
-            
-            <td mat-cell *matCellDef="let element">{{ element.categoryName }}</td>
-            
-          </ng-container>
-          
-          <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
-            
-            <td mat-cell *matCellDef="let element">{{ element.description }}</td>
-            
-          </ng-container>
-          
+              <!-- Sub-categories (rendered inline as indented rows) -->
+              <ng-container *ngIf="element.expanded">
+                <tr *ngFor="let sub of element.subCategories" class="bg-slate-50/50 hover:bg-slate-100/50 transition-colors">
+                  <td class="px-6 py-3 whitespace-nowrap"></td>
+                  <td class="px-6 py-3 whitespace-nowrap pl-12 text-slate-700 text-sm font-medium">
+                    <span class="inline-block w-2 h-2 rounded-full bg-slate-300 mr-2"></span>
+                    {{ sub.subCategoryName }}
+                  </td>
+                  <td class="px-6 py-3 whitespace-nowrap text-slate-400 font-mono text-xs">{{ sub.subCategoryCode }}</td>
+                  <td class="px-6 py-3 whitespace-nowrap text-slate-400 text-xs">-</td>
+                  <td class="px-6 py-3 whitespace-nowrap text-right text-sm font-medium">
+                    <div class="flex items-center justify-end gap-1">
+                      <!-- Edit Sub-category -->
+                      <button mat-icon-button (click)="openSubFormDrawer(sub, element.categoryCode)" matTooltip="Edit Sub Category">
+                        <mat-icon class="scale-90" [svgIcon]="'heroicons_outline:pencil-square'"></mat-icon>
+                      </button>
+                      <!-- Delete Sub-category -->
+                      <button mat-icon-button (click)="deleteSub(sub.id)" matTooltip="Delete Sub Category">
+                        <mat-icon class="text-warn scale-90" [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="!element.subCategories?.length" class="bg-slate-50/20">
+                  <td></td>
+                  <td colspan="4" class="px-6 py-3 text-xs text-slate-400 italic">
+                    No sub-categories found. Click the + icon to add one.
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
 
-          <!-- Generate columns for "Show Children" buttons -->
-          
-
-          <!-- General Actions Column (Edit/Delete) -->
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Actions</th>
-            <td mat-cell *matCellDef="let element">
-              <button mat-icon-button (click)="openFormDrawer(element.id)" matTooltip="Edit ExpenseCategory">
-                <mat-icon [svgIcon]="'heroicons_outline:pencil-square'"></mat-icon>
-              </button>
-              <button mat-icon-button (click)="delete(element.id)" matTooltip="Delete ExpenseCategory">
-                <mat-icon class="text-warn" [svgIcon]="'heroicons_outline:trash'"></mat-icon>
-              </button>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns" class="text-slate-500"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="border-b border-slate-100"></tr>
-
-          <tr class="mat-row" *matNoDataRow>
-            <td class="px-4 py-6 text-center mat-cell text-slate-500" [attr.colspan]="displayedColumns.length">No data found.</td>
-          </tr>
+            <tr *ngIf="!dataSource.data.length">
+              <td colspan="5" class="px-6 py-12 text-center text-slate-500">
+                No data found.
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
 
