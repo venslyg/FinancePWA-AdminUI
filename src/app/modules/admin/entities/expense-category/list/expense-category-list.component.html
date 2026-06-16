@@ -64,8 +64,8 @@
                     <mat-icon [svgIcon]="element.expanded ? 'heroicons_mini:chevron-down' : 'heroicons_mini:chevron-right'"></mat-icon>
                   </button>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap font-semibold text-slate-800">{{ element.categoryName }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-slate-500 font-mono text-sm">{{ element.categoryCode }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-slate-800 text-sm font-semibold">{{ element.categoryName }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-slate-500 text-sm">{{ element.categoryCode }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-slate-500 text-sm">{{ element.description }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-left text-sm">
                   <mat-slide-toggle color="primary" [checked]="element.isActive" (change)="toggleActive(element)"></mat-slide-toggle>
@@ -93,11 +93,10 @@
                 <tr *ngFor="let sub of element.subCategories" class="bg-slate-50/50 hover:bg-slate-100/50 transition-colors">
                   <td class="px-6 py-3 whitespace-nowrap"></td>
                   <td class="px-6 py-3 whitespace-nowrap pl-12 text-slate-700 text-sm font-medium">
-                    <span class="inline-block w-2 h-2 rounded-full bg-slate-300 mr-2"></span>
                     {{ sub.subCategoryName }}
                   </td>
-                  <td class="px-6 py-3 whitespace-nowrap text-slate-400 font-mono text-xs">{{ sub.subCategoryCode }}</td>
-                  <td class="px-6 py-3 whitespace-nowrap text-slate-400 text-xs">-</td>
+                  <td class="px-6 py-3 whitespace-nowrap text-slate-500 text-sm">{{ sub.subCategoryCode }}</td>
+                  <td class="px-6 py-3 whitespace-nowrap text-slate-500 text-sm">-</td>
                   <td class="px-6 py-3 whitespace-nowrap text-left text-sm">
                     <mat-slide-toggle color="primary" [checked]="sub.isActive" (change)="toggleSubActive(sub)"></mat-slide-toggle>
                   </td>
