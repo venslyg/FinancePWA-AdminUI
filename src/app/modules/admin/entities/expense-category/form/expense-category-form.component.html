@@ -2,7 +2,7 @@
 <form class="flex flex-col h-full" [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="flex items-center justify-between pb-4 border-b">
     <h2 class="text-2xl font-bold">
-      {{ heading || (isEditMode ? 'Edit ExpenseCategory' : 'New ExpenseCategory') }}
+      {{ heading || (isEditMode ? 'Edit Expense Category' : 'New Expense Category') }}
     </h2>
     <mat-icon *ngIf="isSaving" class="animate-spin">autorenew</mat-icon>
   </div>

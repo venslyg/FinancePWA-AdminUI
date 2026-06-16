@@ -2,7 +2,7 @@
 <form class="flex flex-col h-full" [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="flex items-center justify-between pb-4 border-b">
     <h2 class="text-2xl font-bold">
-      {{ heading || (isEditMode ? 'Edit ExpenseSubCategory' : 'New ExpenseSubCategory') }}
+      {{ heading || (isEditMode ? 'Edit Expense Sub Category' : 'New Expense Sub Category') }}
     </h2>
     <mat-icon *ngIf="isSaving" class="animate-spin">autorenew</mat-icon>
   </div>
@@ -11,8 +11,8 @@
     
       
     <mat-form-field class="w-full">
-      <mat-label>Category Code</mat-label>
-      <input matInput formControlName="categoryCode" readonly>
+      <mat-label>Category Name</mat-label>
+      <input matInput [value]="categoryName" readonly>
     </mat-form-field>
       
     
@@ -25,7 +25,7 @@
     
       
     <mat-form-field class="w-full">
-      <mat-label>Sub CategoryName</mat-label>
+      <mat-label>Sub Category Name</mat-label>
       <input matInput formControlName="subCategoryName" >
     </mat-form-field></div>
 

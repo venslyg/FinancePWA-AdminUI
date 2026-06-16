@@ -109,7 +109,6 @@ const FILTER_OPERATOR_LIBRARY: Record<FilterValueType, FilterFieldOperator[]> = 
     MatDatepickerModule,
     MatNativeDateModule,
     ExpenseCategoryFormComponent,
-    ExpenseSubCategoryFormComponent,
   ],
   templateUrl: './expense-category-list.component.html',
 })
