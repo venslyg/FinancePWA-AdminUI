@@ -187,61 +187,72 @@ export class ExpenseCategoryListComponent implements AfterViewInit, OnInit {
     }
 
     this.isLoading = true;
-    const req: any = {
-      page: this.paginator.pageIndex,
-      size: this.paginator.pageSize,
-      sort: this.getSortParameters(),
-      ...this.baseParentFilters,
-      ...this.activeFilters,
-    };
 
-    if (this.searchQuery) {
-      const q = this.searchQuery.trim();
-      if (q.toUpperCase().startsWith('EXCAT-') || q.toLowerCase().startsWith('cat')) {
-        req['categoryCode.contains'] = q;
-      } else {
-        req['categoryName.contains'] = q;
-      }
-    }
-
-    const expandedMap = new Map<number, boolean>();
-    this.dataSource.data.forEach(item => {
-      if (item.id !== undefined && item.expanded !== undefined) {
-        expandedMap.set(item.id, item.expanded);
-      }
-    });
-
-    this.expenseCategoryService.query(req).pipe(
+    // Fetch all categories (size 1000) to allow client-side filtering and hierarchy matching
+    this.expenseCategoryService.query({ size: 1000, ...this.baseParentFilters, ...this.activeFilters }).pipe(
       switchMap(res => {
         const categories: IExpenseCategoryExtended[] = res.body ?? [];
-        categories.forEach(cat => {
-          if (cat.id !== undefined) {
-            cat.expanded = expandedMap.get(cat.id) ?? false;
-          } else {
-            cat.expanded = false;
-          }
-        });
         
-        this.totalItems = Number(res.headers.get('X-Total-Count') ?? 0);
-        
-        if (categories.length === 0) {
-          this.isLoading = false;
-          this.dataSource.data = [];
-          return of(null);
-        }
-
         return this.expenseSubCategoryService.query({ size: 1000 }).pipe(
           tap(subRes => {
             this.isLoading = false;
             const subCategories = subRes.body ?? [];
+            
+            // Map sub-categories to their parent categories
             categories.forEach(cat => {
               cat.subCategories = subCategories.filter(sub => sub.categoryCode === cat.categoryCode);
             });
-            this.dataSource.data = categories;
+
+            // Apply search query filtering (both category and sub-category)
+            let filtered = categories;
+            if (this.searchQuery) {
+              const q = this.searchQuery.toLowerCase().trim();
+              filtered = categories.filter(cat => {
+                const catMatches = !!(cat.categoryName?.toLowerCase().includes(q) || cat.categoryCode?.toLowerCase().includes(q));
+                const subMatches = cat.subCategories?.some(sub => 
+                  sub.subCategoryName?.toLowerCase().includes(q) || sub.subCategoryCode?.toLowerCase().includes(q)
+                ) ?? false;
+                return catMatches || subMatches;
+              });
+
+              // Also, if a category is kept because of a sub-category match, we should auto-expand it to show the match!
+              filtered.forEach(cat => {
+                const subMatches = cat.subCategories?.some(sub => 
+                  sub.subCategoryName?.toLowerCase().includes(q) || sub.subCategoryCode?.toLowerCase().includes(q)
+                ) ?? false;
+                if (subMatches) {
+                  cat.expanded = true;
+                }
+              });
+            }
+
+            // Restore previous expansion states if any
+            const expandedMap = new Map<number, boolean>();
+            this.dataSource.data.forEach(item => {
+              if (item.id !== undefined && item.expanded !== undefined) {
+                expandedMap.set(item.id, item.expanded);
+              }
+            });
+            filtered.forEach(cat => {
+              if (cat.id !== undefined) {
+                const restoredExpanded = expandedMap.get(cat.id);
+                if (restoredExpanded !== undefined) {
+                  cat.expanded = restoredExpanded;
+                } else if (cat.expanded === undefined) {
+                  cat.expanded = false;
+                }
+              }
+            });
+
+            // Paginate the filtered list on client-side
+            this.totalItems = filtered.length;
+            const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
+            const endIndex = startIndex + this.paginator.pageSize;
+            this.dataSource.data = filtered.slice(startIndex, endIndex);
           }),
           catchError(() => {
             this.isLoading = false;
-            this.dataSource.data = categories;
+            this.dataSource.data = [];
             return of(null);
           })
         );

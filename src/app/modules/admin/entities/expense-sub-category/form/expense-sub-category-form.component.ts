@@ -18,6 +18,7 @@ import { IExpenseSubCategory, NewExpenseSubCategory } from '../expense-sub-categ
 import { ExpenseSubCategoryService } from '../service/expense-sub-category.service';
 import { ExpenseSubCategoryFormGroup, ExpenseSubCategoryFormService } from '../update/expense-sub-category-form.service';
 import { ExpenseCategoryService } from '../../expense-category/service/expense-category.service';
+import { IExpenseCategory } from '../../expense-category/expense-category.model';
 
 
 
@@ -57,6 +58,7 @@ export class ExpenseSubCategoryFormComponent implements OnInit, OnChanges {
   private readonly dialogData = inject(MAT_DIALOG_DATA, { optional: true }) as ExpenseSubCategoryFormDialogData | null;
 
   categoryName: string = '';
+  parentCategory: IExpenseCategory | null = null;
 
   @Input() entity: IExpenseSubCategory | null = null;
   @Input() heading?: string;
@@ -97,6 +99,7 @@ export class ExpenseSubCategoryFormComponent implements OnInit, OnChanges {
     this.errorMessage = null;
     this.isSaving = true;
     const payload = this.formService.getExpenseSubCategory(this.form);
+    payload.category = this.parentCategory;
     const isUpdate = payload.id !== null;
     const request$ = isUpdate
       ? this.expenseSubCategoryService.update(payload as IExpenseSubCategory)
@@ -152,6 +155,7 @@ export class ExpenseSubCategoryFormComponent implements OnInit, OnChanges {
       this.expenseCategoryService.query({ 'categoryCode.equals': catCode }).subscribe(res => {
         if (res.body && res.body.length > 0) {
           this.categoryName = String(res.body[0].categoryName ?? '');
+          this.parentCategory = res.body[0];
         }
       });
     }

@@ -37,7 +37,7 @@ export class ExpenseCategoryFormService {
   resetForm(form: ExpenseCategoryFormGroup, entity: ExpenseCategoryFormGroupInput): void {
     form.reset({
       ...entity,
-      
+      isActive: entity.isActive ?? true,
     } as any);
     form.controls.id.setValue(entity.id);
   }
